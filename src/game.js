@@ -55,7 +55,7 @@ export class Game extends Phaser.Scene{
 
     }
 
-
+    //Metodos algoritmo
     elegir_Accion(estado){
         var accion = 0;
         if(Math.random()<this.epsilon){
@@ -98,7 +98,7 @@ export class Game extends Phaser.Scene{
         }
     }
 
-
+    //crear la matriz con ceros
     llenarCeros(matriz){
         for (let i = 0; i<3;i++){
             for(let j = 0; j<this.col*this.fil*this.col;j++){
@@ -107,6 +107,7 @@ export class Game extends Phaser.Scene{
         }
     }
 
+    
     getSituacion(){
         var res = "";
         res = res + this.posBola[0] + this.posBola[1] + this.posPlat;
@@ -124,12 +125,12 @@ export class Game extends Phaser.Scene{
         this.incrh = this.height/this.fil;
         //console.log(incr);
         for(var i = this.incrw; i<this.width; i= i + this.incrw){
-            console.log("Incr" + i);
+            //console.log("Incr" + i);
             this.graphics.lineBetween(i, 0, i, this.height);
         }
 
         for(var i = this.incrh; i<this.height; i= i + this.incrh){
-            console.log("Incr" + i);
+            //console.log("Incr" + i);
             this.graphics.lineBetween(0, i, this.width, i);
         }
 
