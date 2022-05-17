@@ -1,3 +1,5 @@
+import { Ball } from "./components/ball.js";
+import { Platform } from "./components/platform.js";
 
 export class Game extends Phaser.Scene{
     constructor(fil,col){
@@ -7,7 +9,9 @@ export class Game extends Phaser.Scene{
     }
 
     init(){
-        
+        this.ball = new Ball(this,400,200);
+        this.platform = new Platform(this,400,460);
+
     }
 
     preload(){
@@ -17,30 +21,22 @@ export class Game extends Phaser.Scene{
     
 
     create(){
-        this.graphics = this.add.graphics()
-        this.ball = this.physics.add.image(400,200,'ball');
-        this.ball.tint = 0x00FFF77;
-        this.ball.setCollideWorldBounds(true);
-        this.ball.setBounce(1);
-        this.posBola = this.coordenadasBola();
-        //sprite.tint = 0xff00ff
-
-        this.platform = this.physics.add.image(400,460,'platform').setImmovable();
-        this.platform.body.allowGravity = false;
-        this.platform.setCollideWorldBounds(true);
-        this.posPlat = Math.floor(this.platform.x/this.incrw)
-
         this.width = this.sys.game.canvas.width;
         this.height = this.sys.game.canvas.height;
+        this.incrw = this.width/this.col;
+        this.incrh = this.height/this.fil;
+        this.graphics = this.add.graphics()
+
+        this.ball.create();
+        this.platform.create();
+        
         this.exito = this.getRndInteger(50,this.width-50);
         this.dibujar();
-        console.log([this.ball.x,this.ball.y]);
-        console.log(this.coordenadasBola());
+        this.posPlat = this.platform.coordenada();
+        this.posBola = this.ball.coordenadas();
+        console.log(this.posPlat)
+        console.log(this.posBola);
         
-        
-        // console.log(this.platform.x);
-        //console.log(this.posPlat);
-        //console.log(typeof(this.getSituacion()));
         console.log(this.getSituacion());
 
 
@@ -50,42 +46,36 @@ export class Game extends Phaser.Scene{
         this.alpha = 0.85
         this.gamma = 0.95
         this.Q = Array(this.col*this.fil*this.col);
-        for(var i=0; i<this.col*this.fil*this.col; i++) {
+        for(var i=0; i<this.Q.length; i++) {
             this.Q[i] = new Array(3);
         }
 
         this.llenarCeros(this.Q);
         console.log(this.Q);
 
-        this.physics.add.collider(this.ball, this.platform, null, null, this);
+        this.physics.add.collider(this.ball.get(), this.platform.get(), null, null, this);
 
-        const initialXSpeed = Math.random() * 200 + 50;
-        const initialYSpeed = Math.random() * 200 + 50;
-        this.ball.setVelocityX(initialXSpeed);
-        this.ball.setVelocityY(initialYSpeed);
-
-
-        this.cursors = this.input.keyboard.createCursorKeys();
-
+        this.ball.setVelocities();
         
+        this.cursors = this.input.keyboard.createCursorKeys();        
 
     }
 
     update(){
-        if(this.ball.body.y==0 && (Math.abs(this.ball.body.x-this.exito))<50){
+        if(this.ball.get().body.y==0 && (Math.abs(this.ball.get().body.x-this.exito))<50){
             console.log("exito");
         }
 
-        if(this.ball.body.y>this.platform.body.y+20){
+        if(this.ball.get().body.y>this.platform.get().body.y+20){
             this.reiniciar();
         }
 
-        this.platform.body.setVelocityX(0);
+        this.platform.setVelocityX(0);
 
         if (this.cursors.left.isDown) {
-            this.platform.body.setVelocityX(-350);
+            this.platform.setVelocityX(-350);
         } else if (this.cursors.right.isDown) {
-            this.platform.body.setVelocityX(350);
+            this.platform.setVelocityX(350);
         }
 
 
@@ -115,13 +105,8 @@ export class Game extends Phaser.Scene{
     }
 
     reiniciar(){
-        this.ball.x = 400;
-        this.ball.y = 200;
-        const initialXSpeed = Math.random() * 200 + 50;
-        const initialYSpeed = Math.random() * 200 + 50;
-        this.ball.setVelocityX(initialXSpeed);
-        this.ball.setVelocityY(initialYSpeed);
-        this.platform.x = 400;
+        this.ball.reiniciar();
+        
     }
 
     aprendizaje(){
@@ -166,42 +151,24 @@ export class Game extends Phaser.Scene{
 
     //Dibuja las lineas para poder representar 
     dibujar(){
-        //this.graphics.lineStyle(1, 0x00ff00, 1);
         this.graphics.lineStyle(1, 0xff5000,1)
-        //this.graphics.lineBetween(50, 0, 50, 500);
-        //this.graphics.lineBetween(100, 0, 100, 500);
-        //this.graphics.lineBetween(150, 0, 150, 500);
-        this.incrw = this.width/this.col;
-        this.incrh = this.height/this.fil;
-        //console.log(incr);
+
+
         for(var i = this.incrw; i<this.width; i= i + this.incrw){
-            //console.log("Incr" + i);
+
             this.graphics.lineBetween(i, 0, i, this.height);
         }
 
         for(var i = this.incrh; i<this.height; i= i + this.incrh){
-            //console.log("Incr" + i);
+
             this.graphics.lineBetween(0, i, this.width, i);
         }
 
         this.graphics.lineStyle(25, 0x1EFA08,2)
-
-        
-        /*if (this.exito<this.width/2){
-            
-        }else{
-            this.graphics.lineBetween(this.exito-100, 0, this.exito, 0);
-        }*/
         this.graphics.lineBetween(this.exito-50, 0, this.exito+50, 0);
         
 
 
-    }
-
-    coordenadasBola(){
-        var normal =  [this.ball.x,this.ball.y];
-        var cuadr = [Math.floor(this.ball.y/this.incrh),Math.floor(this.ball.x/this.incrw)]
-        return cuadr;
     }
     
 }
