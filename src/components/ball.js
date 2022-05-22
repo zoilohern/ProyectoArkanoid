@@ -27,8 +27,8 @@ export class Ball{
     }
 
     setVelocities(){
-        const initialXSpeed = (Math.random() * 200 + 50) * (this.randomTwo());
-        const initialYSpeed = Math.random() * 200 + 50;
+        const initialXSpeed = (Math.random() * 2000 + 50) * (this.randomTwo());
+        const initialYSpeed = Math.random() * 2000 + 50;
         this.ball.setVelocityX(initialXSpeed);
         this.ball.setVelocityY(initialYSpeed);
         console.log(initialXSpeed);

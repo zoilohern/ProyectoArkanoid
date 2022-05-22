@@ -4,7 +4,7 @@ const config = {
     type: Phaser.AUTO,
     width: 800,
     height: 500,
-    scene: [new Game(8,6)],
+    scene: [new Game(8,8)],
     physics:{
         default: 'arcade',
         arcade:{

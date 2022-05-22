@@ -10,6 +10,8 @@ export class Game extends Phaser.Scene{
         this.base = Math.max(this.fil,this.col);        
         this.premio = 0;
         this.impacthapp = false;
+        //this.pausado = false;
+
         //parseInt(num,this.base)
     }
 
@@ -27,6 +29,7 @@ export class Game extends Phaser.Scene{
     
 
     create(){
+        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.width = this.sys.game.canvas.width;
         this.height = this.sys.game.canvas.height;
         this.incrw = this.width/this.col;
@@ -53,6 +56,8 @@ export class Game extends Phaser.Scene{
 
         this.physics.add.collider(this.ball.get(), this.platform.get(), this.impacto, null, this);
 
+        //this.physics.add.collider(this.ball.get(), this.platform.get(), this.algoritmo.impactea, null, this.algoritmo);
+
 
         this.ball.setVelocities();
         
@@ -62,8 +67,14 @@ export class Game extends Phaser.Scene{
 
     update(){
 
+        if(this.spaceKey.isDown && !this.pausado){
+            this.scene.pause();
+            this.pausado = true;
+        }
+
         if(this.ball.get().body.y==0 && (Math.abs(this.ball.get().body.x-this.exito))<50){
             console.log("exito");
+            this.algoritmo.exito();
         }
 
         if(this.ball.get().body.y>this.platform.get().body.y+20){
@@ -71,13 +82,13 @@ export class Game extends Phaser.Scene{
             this.premio = -100;
         }
 
-        /*this.platform.setVelocityX(0);
+        //this.platform.setVelocityX(0);
 
         if (this.cursors.left.isDown) {
             this.platform.setVelocityX(-350);
         } else if (this.cursors.right.isDown) {
             this.platform.setVelocityX(350);
-        }*/
+        }
         this.algoritmo.aprendizaje(this.getSituacion(),this.base);
        // console.log("Pasamos " + this.getSituacion);
 
@@ -86,9 +97,9 @@ export class Game extends Phaser.Scene{
 
     realizarAccion(accion){
         if(accion == 0){
-            this.platform.setVelocityX(-350)
+            this.platform.setVelocityX(-850)
         }else if (accion == 1){
-           this.platform.setVelocityX(350);
+           this.platform.setVelocityX(850);//350
         }else if (accion == 2){
             this.platform.setVelocityX(0)
         }
@@ -100,6 +111,8 @@ export class Game extends Phaser.Scene{
     impacto(){
         this.premio = 0.02;
         this.impacthapp = true;
+       // console.log("JJJEJEJ")
+       this.algoritmo.impactea();
     }
 
     getRndInteger(min, max) {
@@ -108,6 +121,7 @@ export class Game extends Phaser.Scene{
 
     reiniciar(){
         this.ball.reiniciar();
+        this.algoritmo.reiniciar();
         
     }
 
