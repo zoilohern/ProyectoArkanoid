@@ -1,19 +1,73 @@
+
+class QTable {
+  constructor(nActions) {  
+    this.Q = {};
+    this.alpha = 0.1
+    this.gamma = 0.9
+    this.nActions = nActions;
+  }
+  
+  _checkState(state) {
+    let exists = state in this.Q;
+    if (!exists) {
+      this.Q[state] = new Array(this.nActions).fill(0);
+    }     
+  }
+  
+  getMaxAction(state) {
+    this._checkState(state);
+    
+    let actions = this.Q[state];
+    let argmax = -1;
+    let max = -99999999;
+    for (let i = 0; i < actions.length; i++) {
+      if (actions[i] > max) {
+        max = actions[i];
+        argmax = i;
+      }
+    }
+    return argmax;    
+  }
+  
+  getRandomAction(state) {
+    this._checkState(state);  
+    let index = Math.floor(Math.random() * this.nActions);
+    return index;
+  }  
+
+  updateQTable(estado, estado2, recompensa, accion, accion2){
+      this._checkState(estado);
+      this._checkState(estado2);
+      var predic = this.Q[estado][accion];
+      //console.log("...estado = " + estado)      
+      //console.log("...estado2 = " + estado2)      
+      //console.log("...recompensa = " + recompensa)      
+      //console.log("...accion = " + accion)      
+      //console.log("...accion2 = " + accion2)
+      //console.log("...this.gamma = " + this.gamma)      
+      var target = recompensa + this.gamma * this.Q[estado2][accion2];
+      //console.log("target = " + target)
+      this.Q[estado][accion] = this.Q[estado][accion] + this.alpha * (target - predic);
+
+  }
+}
+
+
+
 export class Algoritmo {
 
-    constructor(scene,fil,col,acc){
+    constructor(scene,fil,col,nActions){
+        this.nEpisode = 0;
         this.relatedScene = scene;
-        this.epsilon = 0.2
+        this.epsilon = 0.1
         this.total_episodes = 10000
         this.max_steps = 100
-        this.alpha = 0.1
-        this.gamma = 0.9
+
         this.fil = fil;
         this.col = col;
         this.fol = Math.max(this.fil,this.col)
-        this.acc = acc;
-        this.Q = Array(this.fol*this.fol*this.fol);
-        this.rew = -0.01;
-        //var timer = scene.time.delayedCall(10000, this.tiempo,null, this);
+        this.Q = new QTable(nActions)
+        this.rew = 0;
         var timer = scene.time.addEvent({
             delay: 5000,                // ms
             callback: this.tiempo,
@@ -21,105 +75,65 @@ export class Algoritmo {
             callbackScope: this,
             loop: true
         });
+        
+        this.total_reward = 0;
     }
 
     create(){
-        this.ultEstado = -1;
-        this.ultAccion = -1;
-        for(let i=0; i<this.Q.length; i++) {
-            this.Q[i] = new Array(this.acc);
-        }
-        this.llenarCeros(this.Q);
+        console.log("creando tabla con nActions " + this.Q.nActions)
+        this.Q = new QTable(this.Q.nActions)
     }
 
     tiempo(){
-        console.log(this.Q);
+        console.log("tabla Q = " + JSON.stringify(this.Q));
     }
 
-    llenarCeros(matriz){
-        for (let i = 0; i<matriz.length;i++){
-            for(let j = 0; j<this.acc;j++){
-                matriz[i][j] = 0;
-            }
-        }
-    }
+
 
     reiniciar(){
-        //this.ultEstado = -1;
-        //this.ultAccion = -1;
-        this.rew = -100
-
+        console.log("END episode = " + this.nEpisode + " reward = " + this.total_reward); //total reward in episode
+        this.total_reward = 0;
+        this.nEpisode += 1;
     }
 
     //Metodos algoritmo
     elegir_Accion(estado){
         var accion = 0;
         if(Math.random()<this.epsilon){
-            accion = this.getRndInteger(0,2);
+            accion = this.Q.getRandomAction(estado);
         }else{
-            accion = this.Q[estado].indexOf(Math.max(...this.Q[estado]));
-            //accion = Math.max.apply(null,this.q[estado]);
+            accion = this.Q.getMaxAction(estado);
         }
         return accion;
     }
 
-    actualizarTabla(estado,estado2,recompensa,accion,accion2){
-        var predic = this.Q[estado][accion];
-        var target = recompensa + this.gamma * this.Q[estado2][accion2];
-        this.Q[estado][accion] = this.Q[estado][accion] + this.alpha * (target - predic);
-
-    }
-
-    /*aprendizaje(estado){
-        var res = 0;
-        for(let i = 0; i<this.total_episodes; i++){
-            var t = 0;
-            this.relatedScene.reiniciar();
-            var estadoInicial = this.getSituacion();
-            accion1 = this.elegir_Accion(estadoInicial)
-
-            while(t<this.max_steps){
-
-            }
+    aprendizaje(estadoActual){
+        if (estadoActual == this.ultEstado) {
+          this.accion2 = this.ultAccion;
+          return
         }
-    }*/
 
-    aprendizaje(estadoNoBase,base){
-        let estadoBase = parseInt("" + estadoNoBase, base)
-        //console.log(estadoBase + " BASESE")
-        /*if(this.ultEstado==estadoBase){
-            this.relatedScene.realizarAccion(this.ultAccion);
-           // console.log("jajajajaj")
-        }else*/ if(this.ultEstado == -1){
-            this.ultEstado = estadoBase;
+        if(this.ultEstado == -1){
+            this.ultEstado = estadoActual;
             this.ultAccion = this.elegir_Accion(this.ultEstado);
-            //console.log(this.ultAccion);
-            this.relatedScene.realizarAccion(this.ultAccion);
+            
         }else{
-            let estado2 = estadoBase;
+            let estado2 = estadoActual;
             let accion2 = this.elegir_Accion(estado2);
-            let rew = this.relatedScene.premio;
-            this.actualizarTabla(this.ultEstado,estado2,this.rew,this.ultAccion,accion2);
-            console.log("Se llega aqui con  " + this.rew + "  con la accion " +  this.ultAccion);
+            this.Q.updateQTable(this.ultEstado, estado2, this.rew, this.ultAccion, accion2);
             this.ultEstado = estado2;
             this.ultAccion = accion2;
-            this.relatedScene.impacthapp = false;
-            this.relatedScene.realizarAccion(this.ultAccion);
-            this.rew = -0.01
-           // 
         }
+        this.relatedScene.realizarAccion(this.ultAccion);
+        //Reset reward after applying it 
+        this.rew = 0;
 
     }
 
-    impactea(){
-        //console.log("SE invoca al collider de algoritmo")
-        this.rew = 1;
+    addReward(reward) {
+      this.rew += reward;
+      this.total_reward += this.rew;
     }
-
-    exito(){
-        this.rew = 100;
-    }
-    
 
     getRndInteger(min, max) {
         return Math.floor(Math.random() * (max - min + 1) ) + min;

@@ -9,6 +9,7 @@ export class Ball{
 
     create(){
         this.ball = this.relatedScene.physics.add.image(this.posx,this.posy,'ball');
+        
         this.ball.tint = 0x00FFF77;
         this.ball.setCollideWorldBounds(true);
         this.ball.setBounce(1);
@@ -27,21 +28,20 @@ export class Ball{
     }
 
     setVelocities(){
-        const initialXSpeed = (Math.random() * 2000 + 50) * (this.randomTwo());
-        const initialYSpeed = Math.random() * 2000 + 50;
+        const initialXSpeed = (Math.random() * 500 + 50) * (this.randomTwo()); //450 / (Math.floor(Math.random() * 1000)) * this.randomTwo(); //* (this.randomTwo());
+        const initialYSpeed = Math.random() * 300 + 200; //450;
         this.ball.setVelocityX(initialXSpeed);
         this.ball.setVelocityY(initialYSpeed);
-        console.log(initialXSpeed);
     }
 
     reiniciar(){
-        this.ball.x = 400;
-        this.ball.y = 200;
+        this.ball.x = this.relatedScene.width/2;
+        this.ball.y = this.relatedScene.height/5;
         this.setVelocities();
     }
 
     coordenadas(){
-        let cuadr = [Math.floor(this.ball.y/this.relatedScene.incrh),Math.floor(this.ball.x/this.relatedScene.incrw)]
+        let cuadr = [Math.floor(this.ball.y/this.relatedScene.incrh), Math.floor(this.ball.x/this.relatedScene.incrw)]
         return cuadr;
     }
 
