@@ -16,8 +16,8 @@ export class Game extends Phaser.Scene{
     }
 
     init(){
-        this.ball = new Ball(this,400,200);
-        this.platform = new Platform(this,400,460);
+        this.ball = new Ball(this);
+        this.platform = new Platform(this);
         this.algoritmo = new Algoritmo(this,this.fil,this.col,3);
         console.log("BASE " + this.base)
     }

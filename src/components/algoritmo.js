@@ -100,7 +100,7 @@ export class Algoritmo {
             let accion2 = this.elegir_Accion(estado2);
             let rew = this.relatedScene.premio;
             this.actualizarTabla(this.ultEstado,estado2,this.rew,this.ultAccion,accion2);
-            console.log("Se llega aqui con  " + this.rew + "  con la accion " +  this.ultAccion);
+            //console.log("Se llega aqui con  " + this.rew + "  con la accion " +  this.ultAccion);
             this.ultEstado = estado2;
             this.ultAccion = accion2;
             this.relatedScene.impacthapp = false;

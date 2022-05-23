@@ -1,14 +1,12 @@
 export class Ball{
 
-    constructor (scene,posx,posy){
+    constructor (scene){
         this.relatedScene = scene;
-        this.posx = posx;
-        this.posy = posy;
 
     }
 
     create(){
-        this.ball = this.relatedScene.physics.add.image(this.posx,this.posy,'ball');
+        this.ball = this.relatedScene.physics.add.image(this.relatedScene.width/2,this.relatedScene.height/5,'ball');
         this.ball.tint = 0x00FFF77;
         this.ball.setCollideWorldBounds(true);
         this.ball.setBounce(1);

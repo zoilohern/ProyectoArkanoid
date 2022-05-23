@@ -1,13 +1,12 @@
 export class Platform{
 
-    constructor (scene,posx,posy){
+    constructor (scene){
         this.relatedScene = scene;
-        this.posx = posx;
-        this.posy = posy;
+
     }
 
     create(){
-        this.platform = this.relatedScene.physics.add.image(this.posx,this.posy,'platform').setImmovable();
+        this.platform = this.relatedScene.physics.add.image(this.relatedScene.width/2,this.relatedScene.height -40,'platform').setImmovable();
         this.platform.body.allowGravity = false;
         this.platform.setCollideWorldBounds(true);
     }
