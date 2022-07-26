@@ -1,25 +1,26 @@
 import { Ball } from "./components/ball.js";
 import { Platform } from "./components/platform.js";
 import { Algoritmo } from "./components/algoritmo.js";
+import { Controller } from "./components/controller.js";
 
 export class Game extends Phaser.Scene{
     constructor(fil,col){
         super({key: 'game'})
         this.fil = fil;
-        this.col = col;
-        this.base = Math.max(this.fil,this.col);        
-        this.premio = 0;
+        this.col = col;      
         this.impacthapp = false;
-        //this.pausado = false;
-
-        //parseInt(num,this.base)
+        this.simulating = false;
+        this.restarting = false;
+        this.controlling = false;
+        this.win = false;
     }
+    
 
     init(){
-        this.ball = new Ball(this);
-        this.platform = new Platform(this);
+        this.ball = new Ball(this,400,200);
+        this.platform = new Platform(this,400,460);
         this.algoritmo = new Algoritmo(this,this.fil,this.col,3);
-        console.log("BASE " + this.base)
+        
     }
 
     preload(){
@@ -48,7 +49,7 @@ export class Game extends Phaser.Scene{
         console.log(this.posPlat)
         console.log(this.posBola);
         
-        console.log(this.getSituacion());
+        console.log(this.getSituation());
 
         this.algoritmo.create();
 
@@ -56,63 +57,70 @@ export class Game extends Phaser.Scene{
 
         this.physics.add.collider(this.ball.get(), this.platform.get(), this.impacto, null, this);
 
-        //this.physics.add.collider(this.ball.get(), this.platform.get(), this.algoritmo.impactea, null, this.algoritmo);
-
 
         this.ball.setVelocities();
         
-        this.cursors = this.input.keyboard.createCursorKeys();        
+        this.cursors = this.input.keyboard.createCursorKeys();      
+        this.controller = new Controller(this,this.cursors);  
 
     }
 
     update(){
-
-        if(this.spaceKey.isDown && !this.pausado){
+        if (this.spaceKey.isDown && !this.pausado) {
             this.scene.pause();
             this.pausado = true;
+        } 
+
+
+        // Touch objective
+        if (this.ball.get().body.y==0 && (Math.abs(this.ball.get().body.x-this.exito))<50) {
+           // this.algoritmo.addReward(100);
+           this.win = true;
+        }
+        
+        // Touch ball
+       /* if (this.impacthapp) {
+          this.algoritmo.addReward(50);
+          this.impacthapp = false;
+        }*/
+
+        // Loose
+        if (this.ball.get().body.y>this.platform.get().body.y-5) {
+            //this.algoritmo.addReward(-10000);
+            this.restarting = true;
         }
 
-        if(this.ball.get().body.y==0 && (Math.abs(this.ball.get().body.x-this.exito))<50){
-            console.log("exito");
-            this.algoritmo.exito();
+        this.ball.update();
+        if(this.controlling){
+            this.controller.update()
+        }else{
+            this.algoritmo.aprendizaje(this.platform)
         }
+        this.platform.update();
+        //this.algoritmo.aprendizaje(this.getSituacion());
 
-        if(this.ball.get().body.y>this.platform.get().body.y+20){
-            this.reiniciar();
-            this.premio = -100;
+
+        if (this.restarting) {
+          this.restarting = false;
+          this.reiniciar();
         }
-
-        //this.platform.setVelocityX(0);
-
-        if (this.cursors.left.isDown) {
-            this.platform.setVelocityX(-350);
-        } else if (this.cursors.right.isDown) {
-            this.platform.setVelocityX(350);
-        }
-        this.algoritmo.aprendizaje(this.getSituacion(),this.base);
-       // console.log("Pasamos " + this.getSituacion);
-
 
     }
 
     realizarAccion(accion){
-        if(accion == 0){
-            this.platform.setVelocityX(-850)
-        }else if (accion == 1){
+        /*if (accion == 0) {
+            this.platform.setVelocityX(-850);
+        } else if (accion == 1) {
            this.platform.setVelocityX(850);//350
-        }else if (accion == 2){
-            this.platform.setVelocityX(0)
-        }
-        if(!this.impacthapp){
-            this.premio = -0.01;
-        }
+        } else if (accion == 2) {
+            this.platform.setVelocityX(0);
+        }*/
+        this.platform.changeAct(accion);
     }
 
     impacto(){
-        this.premio = 0.02;
-        this.impacthapp = true;
-       // console.log("JJJEJEJ")
-       this.algoritmo.impactea();
+       this.impacthapp = true;
+       this.ball.impact();
     }
 
     getRndInteger(min, max) {
@@ -121,16 +129,32 @@ export class Game extends Phaser.Scene{
 
     reiniciar(){
         this.ball.reiniciar();
-        this.algoritmo.reiniciar();
-        
+        this.algoritmo.reiniciar(this.platform);  
+    }
+
+    controll(){
+        this.controlling = !this.controlling;
+        console.log("Se pulso")
     }
 
     //dadas las posiciones de la bola y la plataforma, devuelve un numero que representa la situacion en la que estamos
-    getSituacion(){
-        var res = "";
-       // res = res + this.posBola[0] + this.posBola[1] + this.posPlat;
-       res = res + this.ball.coordenadas()[0] + this.ball.coordenadas()[1] + this.platform.coordenada();
-        return parseInt(res);
+    getSituation(){  //TODO -> Debería ser getEstado
+       let ball_vx = this.ball.sprite.body.velocity.x;
+       if (ball_vx < 0) {
+          ball_vx = -1;
+       } else {
+          ball_vx = 1
+       }
+       
+       let ball_vy = this.ball.sprite.body.velocity.y;
+       if (ball_vy < 0) {
+          ball_vy = -1;
+       } else {
+          ball_vy = 1
+       }       
+       
+       let res = "_" + this.ball.coordenadas()[0] + "_" + this.ball.coordenadas()[1] + "_" + this.platform.coordenada() + "_" + ball_vx + "_" + ball_vy;
+       return res;
     }
 
     //Dibuja las lineas para poder representar 
