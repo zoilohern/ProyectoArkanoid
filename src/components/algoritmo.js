@@ -6,18 +6,11 @@ export class QTable {
     this.gamma = 0.9
     this.nActions = nActions;
   }
-
- /* constructor(nActions,json){
-    this.Q = json;
-    this.alpha = 0.1
-    this.gamma = 0.9
-    this.nActions = nActions;
-  }*/
   
   _checkState(state) {
     let exists = state in this.Q;
     if (!exists) {
-      this.Q[state] = new Array(this.nActions).fill(0);
+      this.Q[state] = new Array(this.nActions).fill(0); // quizás solo habría que modificar esta y alguna linea parecida para tres en raya
     }     
   }
   
@@ -42,19 +35,19 @@ export class QTable {
     return index;
   }  
 
-  updateQTable(estado, estado2, recompensa, accion, accion2){
-      this._checkState(estado);
-      this._checkState(estado2);
-      var predic = this.Q[estado][accion];
-      //console.log("...estado = " + estado)      
-      //console.log("...estado2 = " + estado2)      
+  updateQTable(state, state2, recompensa, accion, accion2){
+      this._checkState(state);
+      this._checkState(state2);
+      var predic = this.Q[state][accion];
+      //console.log("...state = " + state)      
+      //console.log("...state2 = " + state2)      
       //console.log("...recompensa = " + recompensa)      
       //console.log("...accion = " + accion)      
       //console.log("...accion2 = " + accion2)
       //console.log("...this.gamma = " + this.gamma)      
-      var target = recompensa + this.gamma * this.Q[estado2][accion2];
+      var target = recompensa + this.gamma * this.Q[state2][accion2];
       //console.log("target = " + target)
-      this.Q[estado][accion] = this.Q[estado][accion] + this.alpha * (target - predic);
+      this.Q[state][accion] = this.Q[state][accion] + this.alpha * (target - predic);
 
   }
 }
@@ -104,12 +97,12 @@ export class Algoritmo {
     }
 
     //Metodos algoritmo
-    elegir_Accion(estado){
+    elegir_Accion(state){
         var accion = 0;
         if(Math.random()<this.epsilon){
-            accion = this.Q.getRandomAction(estado);
+            accion = this.Q.getRandomAction(state);
         }else{
-            accion = this.Q.getMaxAction(estado);
+            accion = this.Q.getMaxAction(state);
         }
         return accion;
     }

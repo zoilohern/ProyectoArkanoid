@@ -17,7 +17,7 @@ export class Game extends Phaser.Scene{
         }else if (this.turnPlayer1){
             //actua jugador 1
         }else{
-            //actua jugador 2
+            //actua jugador 2   
         }
     }
 
