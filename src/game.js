@@ -107,7 +107,7 @@ export class Game extends Phaser.Scene{
 
     }
 
-    realizarAccion(accion){
+    doAction(act){
         /*if (accion == 0) {
             this.platform.setVelocityX(-850);
         } else if (accion == 1) {
@@ -115,7 +115,7 @@ export class Game extends Phaser.Scene{
         } else if (accion == 2) {
             this.platform.setVelocityX(0);
         }*/
-        this.platform.changeAct(accion);
+        this.platform.changeAct(act);
     }
 
     impacto(){
@@ -176,5 +176,33 @@ export class Game extends Phaser.Scene{
         this.graphics.lineBetween(this.exito-50, 0, this.exito+50, 0);
         
     }
+
+    /*end() { 
+
+        //END 
+
+         
+
+        this.ball.reset(); 
+
+        this.platform.reset(); 
+
+        this.platform2.reset(); 
+
+        this.nEpisode += 1; 
+
+        if (this.grow && this.platform.lastEpisodeRewards.reduce(average, 0) > this.minScoreToResize) {  
+
+          this.sys.game.scale.resize(this.sys.game.canvas.width + 10, this.sys.game.canvas.height + 10); 
+
+          this.physics.world.setBounds(0, 0, this.sys.game.canvas.width, this.sys.game.canvas.height, true, true, true, true); 
+
+          this.grid.update();   
+
+          this.platform.lastEpisodeRewards = [];            
+
+        }     
+
+    } */
     
 }

@@ -1,5 +1,5 @@
 import { Game } from './src/game.js';
-
+import { QTable } from './src/components/algoritmo.js'
 const config = {
     type: Phaser.AUTO,
     width: 340,
@@ -65,8 +65,30 @@ document.getElementById("change_player").onclick = function(){
 };
 
 document.getElementById("download_history").onclick = function() { 
-  download(game.platform.history, 'text/plain', "history.txt"); 
+  download(game.scene.getScene("game").platform.history, 'text/plain', "history.txt"); 
 }; 
+
+document.getElementById("download_algorithm").onclick = function() { 
+  download(JSON.stringify(game.scene.getScene("game").algoritmo.Q), 'text/plain', "algorithm.txt"); 
+}; 
+
+document.getElementById("load_algorithm").onclick = function() { 
+  try { 
+    const reader = new FileReader();
+    let file = document.getElementById("algorithm_json").files[0]; 
+    reader.readAsText(file); 
+    reader.onload = function() { 
+      let loaded = reader.result; 
+      //console.log(game.scene.getScene("game").algoritmo.Q)
+      game.scene.getScene("game").algoritmo.Q = new QTable(3,JSON.parse(loaded)); 
+      //console.log(game.scene.getScene("game").algoritmo.Q)
+      console.log("LOAD Q = " + loaded); 
+    }        
+  } catch(err) { 
+       console.error("ERROR: " + err);
+  } 
+
+}
 //**/
 
 

@@ -1,11 +1,18 @@
 
-class QTable {
-  constructor(nActions) {  
-    this.Q = {};
+export class QTable {
+  constructor(nActions,json) {  
+    this.Q = json;
     this.alpha = 0.1
     this.gamma = 0.9
     this.nActions = nActions;
   }
+
+ /* constructor(nActions,json){
+    this.Q = json;
+    this.alpha = 0.1
+    this.gamma = 0.9
+    this.nActions = nActions;
+  }*/
   
   _checkState(state) {
     let exists = state in this.Q;
@@ -66,7 +73,7 @@ export class Algoritmo {
         this.fil = fil;
         this.col = col;
         this.fol = Math.max(this.fil,this.col)
-        this.Q = new QTable(nActions)
+        this.Q = new QTable(nActions,{})
         this.rew = 0;
         var timer = scene.time.addEvent({
             delay: 5000,                // ms
@@ -81,7 +88,7 @@ export class Algoritmo {
 
     create(){
         console.log("creando tabla con nActions " + this.Q.nActions)
-        this.Q = new QTable(this.Q.nActions)
+        this.Q = new QTable(this.Q.nActions,{})
     }
 
     tiempo(){
@@ -134,7 +141,7 @@ export class Algoritmo {
           }
           
       }
-        this.relatedScene.realizarAccion(element.action1);
+        this.relatedScene.doAction(element.action1);
         //Reset reward after applying it 
         this.rew = 0;
 
