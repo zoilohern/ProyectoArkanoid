@@ -21,8 +21,9 @@ export class Game extends Phaser.Scene{
     init(){
         this.ball = new Ball(this,400,200);
         this.platform = new Platform(this,this.sys.canvas.width/2,this.sys.canvas.height-40,0);
-        this.platform1 = new Platform(this,this.sys.canvas.width/2,40,180);
+        this.platform2 = new Platform(this,this.sys.canvas.width/2,40,180);
         this.algoritmo = new Algoritmo(this,this.fil,this.col,3);
+        this.algoritmo2 = new Algoritmo(this,this.fil,this.col,3);
         
     }
 
@@ -44,7 +45,7 @@ export class Game extends Phaser.Scene{
 
         this.ball.create();
         this.platform.create();
-        this.platform1.create();
+        this.platform2.create();
         
         this.exito = this.getRndInteger(50,this.width-50);
         this.dibujar();
@@ -56,11 +57,12 @@ export class Game extends Phaser.Scene{
         console.log(this.getSituation());
 
         this.algoritmo.create();
+        this.algoritmo2.create();
 
         console.log(this.algoritmo.Q);
 
         this.physics.add.collider(this.ball.get(), this.platform.get(), this.impacto, null, this);
-
+        this.physics.add.collider(this.ball.get(), this.platform2.get(), this.impacto2, null, this);
 
         this.ball.setVelocities();
         
@@ -115,7 +117,9 @@ export class Game extends Phaser.Scene{
         }else{
             this.algoritmo.aprendizaje(this.platform)
         }
+        this.algoritmo2.aprendizaje(this.platform2)
         this.platform.update();
+        this.platform2.update();
         //this.algoritmo.aprendizaje(this.getSituacion());
 
 
@@ -126,13 +130,18 @@ export class Game extends Phaser.Scene{
 
     }
 
-    doAction(act){
-        this.platform.changeAct(act);
+    doAction(el,act){
+        el.changeAct(act);
     }
 
     impacto(){
        this.impacthapp = true;
-       this.ball.impact();
+       this.ball.impact(0);
+    }
+
+    impacto2(){
+        this.impacthapp = true;
+        this.ball.impact(1);
     }
 
     getRndInteger(min, max) {
@@ -190,33 +199,5 @@ export class Game extends Phaser.Scene{
         this.graphics.lineBetween(this.exito-50, 0, this.exito+50, 0);
         
     }
-
-    /*end() { 
-
-        //END 
-
-         
-
-        this.ball.reset(); 
-
-        this.platform.reset(); 
-
-        this.platform2.reset(); 
-
-        this.nEpisode += 1; 
-
-        if (this.grow && this.platform.lastEpisodeRewards.reduce(average, 0) > this.minScoreToResize) {  
-
-          this.sys.game.scale.resize(this.sys.game.canvas.width + 10, this.sys.game.canvas.height + 10); 
-
-          this.physics.world.setBounds(0, 0, this.sys.game.canvas.width, this.sys.game.canvas.height, true, true, true, true); 
-
-          this.grid.update();   
-
-          this.platform.lastEpisodeRewards = [];            
-
-        }     
-
-    } */
     
 }

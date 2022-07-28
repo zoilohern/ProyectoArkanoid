@@ -55,9 +55,14 @@ export class Ball{
         this.sprite.setVelocityY(initialYSpeed);
     }
 
-    impact(){
+    impact(num){
         this.bounceInPlatform = true;
-        this.platform = this.relatedScene.platform;
+        if(num==0){
+            this.platform = this.relatedScene.platform;
+        }else{
+            this.platform = this.relatedScene.platform2;
+        }
+        
     }
 
     reiniciar(){

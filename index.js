@@ -1,5 +1,6 @@
-//import { Game } from './src/game.js';
-import { Game } from './src/game2.js'
+import { Game } from './src/game.js';
+//import { Game } from './src/game2.js'
+//import { Game } from './src/game3.js'
 import { QTable } from './src/components/algoritmo.js'
 const config = {
     type: Phaser.AUTO,

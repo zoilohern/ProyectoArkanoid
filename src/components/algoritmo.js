@@ -136,7 +136,7 @@ export class Algoritmo {
           }
           
       }
-        this.relatedScene.doAction(element.action1);
+        this.relatedScene.doAction(element,element.action1);
         //Reset reward after applying it 
         this.rew = 0;
 
