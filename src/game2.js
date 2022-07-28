@@ -21,7 +21,7 @@ export class Game extends Phaser.Scene{
     init(){
         this.ball = new Ball(this,400,200);
         this.platform = new Platform(this,this.sys.canvas.width/2,this.sys.canvas.height-40,0);
-        this.platform1 = new Platform(this,this.sys.canvas.width/2,40,180);
+        this.platform1 = new Platform(this,this.sys.canvas.width/2,10,180);
         this.algoritmo = new Algoritmo(this,this.fil,this.col,3);
         
     }
@@ -46,7 +46,8 @@ export class Game extends Phaser.Scene{
         this.platform.create();
         this.platform1.create();
         
-        this.exito = this.getRndInteger(50,this.width-50);
+        this.exito = this.getRndInteger(this.platform1.sprite.width/2,this.width-(this.platform1.sprite.width/2));
+        this.platform1.sprite.x = this.exito;
         this.dibujar();
         this.posPlat = this.platform.coordenada();
         this.posBola = this.ball.coordenadas();
@@ -60,6 +61,7 @@ export class Game extends Phaser.Scene{
         console.log(this.algoritmo.Q);
 
         this.physics.add.collider(this.ball.get(), this.platform.get(), this.impacto, null, this);
+        this.physics.add.collider(this.ball.get(), this.platform1.get(), this.impacto2, null, this);
 
 
         this.ball.setVelocities();
@@ -92,10 +94,10 @@ export class Game extends Phaser.Scene{
 
 
         // Touch objective
-        if (this.ball.get().body.y==0 && (Math.abs(this.ball.get().body.x-this.exito))<50) {
+        /*if (this.ball.get().body.y==0 && (Math.abs(this.ball.get().body.x-this.exito))<50) {
            // this.algoritmo.addReward(100);
            this.win = true;
-        }
+        } SUSTITUIDO POR IMPACTO2*/ 
         
         // Touch ball
        /* if (this.impacthapp) {
@@ -133,6 +135,12 @@ export class Game extends Phaser.Scene{
     impacto(){
        this.impacthapp = true;
        this.ball.impact();
+    }
+
+    impacto2(){
+        this.win = true;
+        this.platform1.sprite.x = this.getRndInteger(this.platform1.sprite.width/2,this.width-(this.platform1.sprite.width/2));
+        console.log(this.platform1.sprite.x)
     }
 
     getRndInteger(min, max) {
@@ -186,8 +194,8 @@ export class Game extends Phaser.Scene{
             this.graphics.lineBetween(0, i, this.width, i);
         }
 
-        this.graphics.lineStyle(25, 0x1EFA08,2)
-        this.graphics.lineBetween(this.exito-50, 0, this.exito+50, 0);
+        /*this.graphics.lineStyle(25, 0x1EFA08,2)
+        this.graphics.lineBetween(this.exito-50, 0, this.exito+50, 0);*/
         
     }
 

@@ -94,6 +94,7 @@ export class Algoritmo {
         console.log("END episode = " + this.nEpisode + " reward = " + element.episodeReward); //total reward in episode
         this.total_reward = 0;
         this.nEpisode += 1;
+        element.episodeReward = 0; //SE HACE EN PLATFORM (ELEMENTO)
     }
 
     //Metodos algoritmo
@@ -127,6 +128,7 @@ export class Algoritmo {
           let state2 = element.getState();
           if(state2!=element.state1){ // comprobar si se ejecuta en caso de reiniciar??
               let action2 = this.elegir_Accion(state2);
+              //console.log(element.stepReward);
               this.Q.updateQTable(element.state1, state2, element.stepReward,element.action1,action2);
               element.stepReward = 0;
               element.state1 = state2;
