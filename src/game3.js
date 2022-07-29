@@ -1,10 +1,18 @@
-
+import { Algoritmo } from "./components/algoritmo.js";
+import { Player } from "./components/player.js";
 
 export class Game extends Phaser.Scene{
     constructor(){
         super({key: 'game'});
 
     }  
+
+    init(){
+        this.player1 = new Player(this,0,0,0)
+        this.player2 = new Player(this,0,0,0)
+        this.algoritmo = new Algoritmo(this,this.fil,this.col,9);
+        this.algoritmo2 = new Algoritmo(this,this.fil,this.col,9);
+    }
     
     create(){
         this.turnPlayer1 = true;
@@ -15,23 +23,25 @@ export class Game extends Phaser.Scene{
         this.incrh = this.height/3;
         this.graphics = this.add.graphics()
         this.drawBoard();
+        this.board = [0,0,0,0,0,0,0,0,0];
         this.drawX(2,0)
         this.drawO(1,0)
+        console.log(this.getSituation())
     }
 
     update(){
         if(this.end){
-
+            //reiniciar
         }else if (this.turnPlayer1){
-            //actua jugador 1
+            this.algoritmo.aprendizaje(this.player1)
         }else{
-            //actua jugador 2   
+            this.algoritmo2.aprendizaje(this.player2);
         }
     }
 
-    doAct(action){
+    doAction(el,action){
         if(this.turnPlayer1){
-
+            
         }else{
 
         }
@@ -74,5 +84,14 @@ export class Game extends Phaser.Scene{
 		this.graphics.closePath()
 		this.graphics.strokeCircle(centerX, centerY, radius)
 	}
+
+    getSituation(){
+        let res = "";
+        this.board.forEach(myFunction)
+        function myFunction(value, index, array) {
+            res += "_" +value;
+          }
+        return res;
+    }
 
 }

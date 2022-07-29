@@ -1,6 +1,6 @@
 import { Ball } from "./components/ball.js";
 import { Platform } from "./components/platform.js";
-import { Algoritmo } from "./components/algoritmo.js";
+import { Algoritmo } from "./components/algoritmo1.js";
 import { Controller } from "./components/controller.js";
 
 export class Game extends Phaser.Scene{
@@ -94,19 +94,13 @@ export class Game extends Phaser.Scene{
 
 
         // Touch objective
-        if (this.ball.get().body.y==0 && (Math.abs(this.ball.get().body.x-this.exito))<50) {
+        if (this.ball.get().body.y<this.platform2.get().body.y) {
            // this.algoritmo.addReward(100);
            this.win = true;
         }
         
-        // Touch ball
-       /* if (this.impacthapp) {
-          this.algoritmo.addReward(50);
-          this.impacthapp = false;
-        }*/
-
         // Loose
-        if (this.ball.get().body.y>this.platform.get().body.y-5) {
+        if (this.ball.get().body.y>this.platform.get().body.y+5) {
             //this.algoritmo.addReward(-10000);
             this.restarting = true;
         }
@@ -123,8 +117,9 @@ export class Game extends Phaser.Scene{
         //this.algoritmo.aprendizaje(this.getSituacion());
 
 
-        if (this.restarting) {
+        if (this.restarting || this.win) {
           this.restarting = false;
+          this.win = false;
           this.reiniciar();
         }
 
