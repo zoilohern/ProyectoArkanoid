@@ -2,11 +2,12 @@ function average(p,c,i,a){
     return p + (c/a.length);
 }
 
-export class Player{
+export class Platform{
 
-    constructor (scene,posx,posy,angle){
+    constructor (scene,posx,posy,angle,strat){
         this.relatedScene = scene;
         this.action = -1;
+        this.vel = 850;
         this.state1 = null;
         this.action1 = null;
         this.stepReward = 0;
@@ -17,12 +18,19 @@ export class Player{
         this.posx = posx;
         this.posy = posy;
         this.angle = angle;
+        this.strategy = strat;
     }
 
     create(){
+        this.sprite = this.relatedScene.physics.add.image(this.posx,this.posy,'platform').setImmovable();
+        this.sprite.body.allowGravity = false;
+        this.sprite.setCollideWorldBounds(true);
+        this.sprite.angle +=this.angle;
     }
     
     restart(){
+        this.sprite.x = this.relatedScene.width/2;
+        this.sprite.y = this.relatedScene.height -40;
     }
 
     get(){
@@ -30,7 +38,7 @@ export class Player{
     }
 
     getState(){
-        return this.relatedScene.getSituation();
+        return this.strategy.getState(this.relatedScene);
     }
 
     update(){
@@ -61,6 +69,15 @@ export class Player{
     changeAct(act){
         this.action = act;
     }
-   
+
+
+    setVelocityX(num){
+        this.sprite.body.setVelocityX(num);
+    }
+
+    coordenada(){
+        return Math.floor(this.sprite.x/this.relatedScene.incrw)
+    }
+    
 
 }

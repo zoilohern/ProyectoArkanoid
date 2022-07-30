@@ -1,7 +1,9 @@
 import { Ball } from "./components/ball.js";
-import { Platform } from "./components/platform.js";
-import { Algoritmo } from "./components/algoritmo1.js";
+import { Platform } from "./components/platformshared.js";
+import { Algoritmo } from "./components/algoritmo1shared.js";
 import { Controller } from "./components/controller.js";
+import { StrategyLowerPlatform } from "./components/strategyLowerPlatform.js";
+import { StrategyUpperPlatform } from "./components/strategyUpperPlatform.js";
 
 export class Game extends Phaser.Scene{
     constructor(fil,col){
@@ -20,8 +22,8 @@ export class Game extends Phaser.Scene{
 
     init(){
         this.ball = new Ball(this,400,200);
-        this.platform = new Platform(this,this.sys.canvas.width/2,this.sys.canvas.height-40,0);
-        this.platform2 = new Platform(this,this.sys.canvas.width/2,40,180);
+        this.platform = new Platform(this,this.sys.canvas.width/2,this.sys.canvas.height-40,0,new StrategyLowerPlatform(this));
+        this.platform2 = new Platform(this,this.sys.canvas.width/2,40,180,new StrategyUpperPlatform(this));
         this.algoritmo = new Algoritmo(this,this.fil,this.col,3);
         this.algoritmo2 = new Algoritmo(this,this.fil,this.col,3);
         
@@ -111,7 +113,8 @@ export class Game extends Phaser.Scene{
         }else{
             this.algoritmo.aprendizaje(this.platform)
         }
-        this.algoritmo2.aprendizaje(this.platform2)
+        //this.algoritmo2.aprendizaje(this.platform2)
+        this.algoritmo.aprendizaje(this.platform2)
         this.platform.update();
         this.platform2.update();
         //this.algoritmo.aprendizaje(this.getSituacion());
@@ -146,7 +149,6 @@ export class Game extends Phaser.Scene{
     reiniciar(){
         this.ball.reiniciar();
         this.algoritmo.reiniciar(this.platform);  
-        this.algoritmo2.reiniciar(this.platform2);
         this.nEpisode += 1; 
     }
 

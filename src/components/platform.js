@@ -1,3 +1,7 @@
+function average(p,c,i,a){
+    return p + (c/a.length);
+}
+
 export class Platform{
 
     constructor (scene,posx,posy,angle){
@@ -33,7 +37,22 @@ export class Platform{
     }
 
     getState(){
-        return this.relatedScene.getSituation();
+        let ball_vx = this.relatedScene.ball.sprite.body.velocity.x;
+       if (ball_vx < 0) {
+          ball_vx = -1;
+       } else {
+          ball_vx = 1
+       }
+       
+       let ball_vy = this.relatedScene.ball.sprite.body.velocity.y;
+       if (ball_vy < 0) {
+          ball_vy = -1;
+       } else {
+          ball_vy = 1
+       }       
+       
+       let res = "_" + this.relatedScene.ball.coordenadas()[0] + "_" + this.relatedScene.ball.coordenadas()[1] + "_" + this.coordenada() + "_"  + ball_vx + "_" + ball_vy;
+       return res;
     }
 
     update(){
@@ -64,6 +83,8 @@ export class Platform{
     changeAct(act){
         this.action = act;
     }
+
+    
 
 
     setVelocityX(num){

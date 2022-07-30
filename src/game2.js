@@ -1,6 +1,6 @@
 import { Ball } from "./components/ball.js";
 import { Platform } from "./components/platform.js";
-import { Algoritmo } from "./components/algoritmo.js";
+import { Algoritmo } from "./components/algoritmo2.js";
 import { Controller } from "./components/controller.js";
 
 export class Game extends Phaser.Scene{
@@ -128,13 +128,13 @@ export class Game extends Phaser.Scene{
 
     }
 
-    doAction(act){
+    doAction(el,act){
         this.platform.changeAct(act);
     }
 
     impacto(){
        this.impacthapp = true;
-       this.ball.impact();
+       this.ball.impact(0);
     }
 
     impacto2(){
