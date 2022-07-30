@@ -25,7 +25,7 @@ export class Game extends Phaser.Scene{
         this.platform = new Platform(this,this.sys.canvas.width/2,this.sys.canvas.height-40,0,new StrategyLowerPlatform(this));
         this.platform2 = new Platform(this,this.sys.canvas.width/2,40,180,new StrategyUpperPlatform(this));
         this.algoritmo = new Algoritmo(this,this.fil,this.col,3);
-        this.algoritmo2 = new Algoritmo(this,this.fil,this.col,3);
+        //this.algoritmo2 = new Algoritmo(this,this.fil,this.col,3);
         
     }
 
@@ -59,7 +59,7 @@ export class Game extends Phaser.Scene{
         console.log(this.getSituation());
 
         this.algoritmo.create();
-        this.algoritmo2.create();
+        //this.algoritmo2.create();
 
         console.log(this.algoritmo.Q);
 

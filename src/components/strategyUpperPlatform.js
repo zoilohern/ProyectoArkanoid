@@ -18,7 +18,8 @@ export class StrategyUpperPlatform{
        } else {
           ball_vy = 1
        }       
-       ball_vy = -ball_vy;  
+       ball_vy = -ball_vy;
+       //let posy = (this.relatedScene.sys.game.canvas.height  
        let res = "_" + this.relatedScene.ball.coordenadas()[0] + "_" + this.relatedScene.ball.coordenadas()[1] + "_" + this.relatedScene.platform2.coordenada()
         + "_"  + ball_vx + "_" + ball_vy;
        return res;
