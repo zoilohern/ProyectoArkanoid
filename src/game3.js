@@ -28,12 +28,14 @@ export class Game extends Phaser.Scene{
         this.drawBoard();
         this.board = [0,0,0,0,0,0,0,0,0];
         console.log(this.getSituation())
+        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update(){
+        if(this.spaceKey.isDown){
         if(this.move>=5 && this.finish()!=0){ //gana alguien
             //reiniciar
-            if(this.finish==1){
+            if(this.finish()==1){
                 this.win = true;
             }else{
                 this.restarting = true;
@@ -49,11 +51,13 @@ export class Game extends Phaser.Scene{
             this.drawBoard();
             this.board = [0,0,0,0,0,0,0,0,0]
             this.move = 0;
+            console.log("EMPATE")
         }else if (this.turnPlayer1){ //juega 1
             this.algoritmo.aprendizaje(this.player1)
         }else{ //juega2
             this.algoritmo2.aprendizaje(this.player2);
         }
+    }
     }
 
     clear(){
@@ -62,10 +66,14 @@ export class Game extends Phaser.Scene{
 
     finish(){
         if(this.checkRow()!=0){
+            console.log("ROW")
             return this.checkRow();
+            
         }else if (this.checkCol()!=0){
+            console.log("COL")
             return this.checkCol();
         }else if(this.checkDiag()!=0){
+            console.log("DIAG")
             return this.checkDiag();
         }else{
             return 0;
