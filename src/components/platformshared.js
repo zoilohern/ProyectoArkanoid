@@ -64,7 +64,7 @@ export class Platform{
             this.history += row + "\n";
             this.lastEpisodeRewards = [];       
         }
-    }
+    }   
 
     changeAct(act){
         this.action = act;

@@ -82,9 +82,7 @@ export class Platform{
 
     changeAct(act){
         this.action = act;
-    }
-
-    
+    }   
 
 
     setVelocityX(num){
