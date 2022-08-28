@@ -23,6 +23,10 @@ export class Player{
     }
     
     restart(){
+        this.state1 = null;
+        this.action1 = null;
+        this.stepReward = 0;
+        this.episodeReward = 0;
     }
 
     get(){

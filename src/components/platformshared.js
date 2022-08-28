@@ -29,8 +29,12 @@ export class Platform{
     }
     
     restart(){
-        this.sprite.x = this.relatedScene.width/2;
-        this.sprite.y = this.relatedScene.height -40;
+        this.state1 = null;
+        this.action1 = null;
+        this.stepReward = 0;
+        this.episodeReward = 0;
+        this.sprite.x = this.posx;
+        this.sprite.y = this.posy;
     }
 
     get(){

@@ -68,7 +68,7 @@ export class Game extends Phaser.Scene{
         
         this.cursors = this.input.keyboard.createCursorKeys();      
         this.controller = new Controller(this,this.cursors);  
-        var timer = this.time.delayedCall(5000,this.tiempo,null,this)
+        //var timer = this.time.delayedCall(5000,this.tiempo,null,this)
 
     }
 
@@ -147,6 +147,8 @@ export class Game extends Phaser.Scene{
         this.ball.reiniciar();
         this.algoritmo.reiniciar(this.platform);  
         this.algoritmo2.reiniciar(this.platform2);
+        this.platform.restart();
+        this.platform2.restart();
         this.nEpisode += 1; 
     }
 

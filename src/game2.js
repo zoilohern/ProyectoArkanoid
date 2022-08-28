@@ -149,7 +149,8 @@ export class Game extends Phaser.Scene{
 
     reiniciar(){
         this.ball.reiniciar();
-        this.algoritmo.reiniciar(this.platform);  
+        this.algoritmo.reiniciar(this.platform); 
+        this.platform.restart(); 
         this.nEpisode += 1; 
     }
 

@@ -16,6 +16,7 @@ export class Game extends Phaser.Scene{
     
     create(){
         this.move = 0;
+        this.controlling = true;
         this.restarting = false;
         this.restartingAll = false;
         this.win = false;
@@ -32,7 +33,7 @@ export class Game extends Phaser.Scene{
     }
 
     update(){
-        if(this.spaceKey.isDown){
+        //if(this.spaceKey.isDown){
         if(this.move>=5 && this.finish()!=0){ //gana alguien
             //reiniciar
             if(this.finish()==1){
@@ -53,11 +54,36 @@ export class Game extends Phaser.Scene{
             this.move = 0;
             console.log("EMPATE")
         }else if (this.turnPlayer1){ //juega 1
-            this.algoritmo.aprendizaje(this.player1)
+            if(this.controlling){
+                this.playerchoice();
+            }else{
+                this.algoritmo.aprendizaje(this.player1)
+            }
         }else{ //juega2
             this.algoritmo2.aprendizaje(this.player2);
         }
+        //console.log(this.getSituation());
+    //}
     }
+
+    playerchoice(){
+        let game = this;
+        game.input.on('pointerdown',function(pointer){
+            if(game.turnPlayer1){
+                game.drawX(Math.floor(pointer.y/game.incrw),Math.floor(pointer.x/game.incrh));
+                let action = Math.floor(pointer.y/game.incrw)*3 + Math.floor(pointer.x/game.incrh);
+                console.log(action)
+                game.board[action] = 1;
+                game.move++;
+                game.turnPlayer1 = false;
+                console.log("hola")
+            }
+            
+        })
+    }
+
+    controll(){
+        this.controlling = !this.controlling;
     }
 
     clear(){
