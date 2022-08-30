@@ -116,14 +116,16 @@ export class Algoritmo {
         }
         if(this.relatedScene.restarting && element.angle == 0){
           this.addReward(-10000,element);
+          this.relatedScene.restarting = false;
         }else if (this.relatedScene.restarting){
           this.addReward(100,element);
         }
         if(this.relatedScene.win && element.angle == 0){
           this.addReward(100,element);
-          this.relatedScene.win = false;
+          
         }else if (this.relatedScene.win){
           this.addReward(-10000,element);
+          this.relatedScene.win = false;
         }
         if(element.state1 == null){
           element.state1 = element.getState();
@@ -132,6 +134,10 @@ export class Algoritmo {
           let state2 = element.getState();
           //if(state2!=element.state1){ // comprobar si se ejecuta en caso de reiniciar??
               let action2 = this.elegir_Accion(state2);
+              //while(!this.relatedScene.isFree(action2)){ COMPROBAR si no se queda atascado
+                 //action2 = this.elegir_Accion(state2);
+                 //console.log("quizas stuck")
+              //}
               //console.log(element.stepReward);
               this.Q.updateQTable(element.state1, state2, element.stepReward,element.action1,action2);
               element.stepReward = 0;
@@ -140,7 +146,10 @@ export class Algoritmo {
           //}
           
       }
+      if(!this.relatedScene.end){
         this.relatedScene.doAction(element,element.action1);
+      }
+        
         //Reset reward after applying it 
         this.rew = 0;
 

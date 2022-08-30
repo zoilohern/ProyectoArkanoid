@@ -20,8 +20,8 @@ export class Game extends Phaser.Scene{
 
     init(){
         this.ball = new Ball(this,400,200);
-        this.platform = new Platform(this,this.sys.canvas.width/2,this.sys.canvas.height-40,0);
-        this.platform1 = new Platform(this,this.sys.canvas.width/2,10,180);
+        this.player1 = new Platform(this,this.sys.canvas.width/2,this.sys.canvas.height-40,0);
+        this.player2 = new Platform(this,this.sys.canvas.width/2,10,180);
         this.algoritmo = new Algoritmo(this,this.fil,this.col,3);
         
     }
@@ -43,13 +43,13 @@ export class Game extends Phaser.Scene{
         this.reward = 0;
 
         this.ball.create();
-        this.platform.create();
-        this.platform1.create();
+        this.player1.create();
+        this.player2.create();
         
-        this.exito = this.getRndInteger(this.platform1.sprite.width/2,this.width-(this.platform1.sprite.width/2));
-        this.platform1.sprite.x = this.exito;
+        this.exito = this.getRndInteger(this.player1.sprite.width/2,this.width-(this.player1.sprite.width/2));
+        this.player1.sprite.x = this.exito;
         this.dibujar();
-        this.posPlat = this.platform.coordenada();
+        this.posPlat = this.player1.coordenada();
         this.posBola = this.ball.coordenadas();
         console.log(this.posPlat)
         console.log(this.posBola);
@@ -60,8 +60,8 @@ export class Game extends Phaser.Scene{
 
         console.log(this.algoritmo.Q);
 
-        this.physics.add.collider(this.ball.get(), this.platform.get(), this.impacto, null, this);
-        this.physics.add.collider(this.ball.get(), this.platform1.get(), this.impacto2, null, this);
+        this.physics.add.collider(this.ball.get(), this.player1.get(), this.impacto, null, this);
+        this.physics.add.collider(this.ball.get(), this.player2.get(), this.impacto2, null, this);
 
 
         this.ball.setVelocities();
@@ -82,8 +82,8 @@ export class Game extends Phaser.Scene{
             this.incrh = this.height/this.fil;
             this.dibujar();
             this.ball.reiniciar();
-            this.platform.restart();
-            this.platform.lastEpisodeRewards = [];                 
+            this.player1.restart();
+            this.player2.lastEpisodeRewards = [];                 
     }
 
     update(){
@@ -106,7 +106,7 @@ export class Game extends Phaser.Scene{
         }*/
 
         // Loose
-        if (this.ball.get().body.y>this.platform.get().body.y-5) {
+        if (this.ball.get().body.y>this.player1.get().body.y-5) {
             //this.algoritmo.addReward(-10000);
             this.restarting = true;
         }
@@ -115,9 +115,9 @@ export class Game extends Phaser.Scene{
         if(this.controlling){
             this.controller.update()
         }else{
-            this.algoritmo.aprendizaje(this.platform)
+            this.algoritmo.aprendizaje(this.player1)
         }
-        this.platform.update();
+        this.player1.update();
         //this.algoritmo.aprendizaje(this.getSituacion());
 
 
@@ -129,7 +129,7 @@ export class Game extends Phaser.Scene{
     }
 
     doAction(el,act){
-        this.platform.changeAct(act);
+        this.player1.changeAct(act);
     }
 
     impacto(){
@@ -139,8 +139,8 @@ export class Game extends Phaser.Scene{
 
     impacto2(){
         this.win = true;
-        this.platform1.sprite.x = this.getRndInteger(this.platform1.sprite.width/2,this.width-(this.platform1.sprite.width/2));
-        console.log(this.platform1.sprite.x)
+        this.player2.sprite.x = this.getRndInteger(this.player2.sprite.width/2,this.width-(this.player2.sprite.width/2));
+        console.log(this.player2.sprite.x)
     }
 
     getRndInteger(min, max) {
@@ -149,8 +149,8 @@ export class Game extends Phaser.Scene{
 
     reiniciar(){
         this.ball.reiniciar();
-        this.algoritmo.reiniciar(this.platform); 
-        this.platform.restart(); 
+        this.algoritmo.reiniciar(this.player1); 
+        this.player1.restart(); 
         this.nEpisode += 1; 
     }
 
@@ -175,7 +175,7 @@ export class Game extends Phaser.Scene{
           ball_vy = 1
        }       
        
-       let res = "_" + this.ball.coordenadas()[0] + "_" + this.ball.coordenadas()[1] + "_" + this.platform.coordenada() + "_" + ball_vx + "_" + ball_vy;
+       let res = "_" + this.ball.coordenadas()[0] + "_" + this.ball.coordenadas()[1] + "_" + this.player1.coordenada() + "_" + ball_vx + "_" + ball_vy;
        return res;
     }
 

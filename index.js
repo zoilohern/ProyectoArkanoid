@@ -68,7 +68,7 @@ document.getElementById("change_player").onclick = function(){
 };
 
 document.getElementById("download_history").onclick = function() { 
-  download(game.scene.getScene("game").platform.history, 'text/plain', "history.txt"); 
+  download(game.scene.getScene("game").player1.history, 'text/plain', "history.txt"); 
 }; 
 
 document.getElementById("download_algorithm").onclick = function() { 

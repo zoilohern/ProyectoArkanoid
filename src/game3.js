@@ -15,8 +15,9 @@ export class Game extends Phaser.Scene{
     }
     
     create(){
+        this.nEpisode = 0;
         this.move = 0;
-        this.controlling = true;
+        this.controlling = false;
         this.restarting = false;
         this.restartingAll = false;
         this.win = false;
@@ -36,18 +37,34 @@ export class Game extends Phaser.Scene{
         //if(this.spaceKey.isDown){
         if(this.move>=5 && this.finish()!=0){ //gana alguien
             //reiniciar
+            this.end = true;
+            this.nEpisode++;
             if(this.finish()==1){
                 this.win = true;
+                this.algoritmo.aprendizaje(this.player1)
+                this.algoritmo2.aprendizaje(this.player2);
+                this.player1.update()
+                this.player2.update()
             }else{
                 this.restarting = true;
+                this.algoritmo2.aprendizaje(this.player2);
+                this.algoritmo.aprendizaje(this.player1);
+                this.player1.update()
+                this.player2.update()
             }
             console.log("GANA" + this.finish())
             this.clear();
             this.drawBoard();
             this.board = [0,0,0,0,0,0,0,0,0]
-            this.move = 0;
+            this.move = 0;           
+            this.end = false;
            
         }else if (this.move>=9){ //(draw) empate
+            this.nEpisode++
+            this.end = true;
+            this.player1.update()
+            this.player2.update()
+            this.end = false;
             this.clear();
             this.drawBoard();
             this.board = [0,0,0,0,0,0,0,0,0]
@@ -68,18 +85,24 @@ export class Game extends Phaser.Scene{
 
     playerchoice(){
         let game = this;
-        game.input.on('pointerdown',function(pointer){
-            if(game.turnPlayer1){
-                game.drawX(Math.floor(pointer.y/game.incrw),Math.floor(pointer.x/game.incrh));
-                let action = Math.floor(pointer.y/game.incrw)*3 + Math.floor(pointer.x/game.incrh);
-                console.log(action)
-                game.board[action] = 1;
-                game.move++;
-                game.turnPlayer1 = false;
-                console.log("hola")
-            }
-            
-        })
+        let correct = false;
+        
+            game.input.on('pointerdown',function(pointer){
+                //if(game.turnPlayer1){
+                    let action = Math.floor(pointer.y/game.incrw)*3 + Math.floor(pointer.x/game.incrh);
+                    if(game.isFree(action)){
+                        game.drawX(Math.floor(pointer.y/game.incrw),Math.floor(pointer.x/game.incrh));
+                        console.log(action)
+                        game.board[action] = 1;
+                        game.move++;
+                        game.turnPlayer1 = false;
+                        correct = true;
+                        console.log("hola")
+                    }
+                    
+                //}
+                
+            })     
     }
 
     controll(){

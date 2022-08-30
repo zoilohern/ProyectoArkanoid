@@ -68,7 +68,7 @@ export class Platform{
             this.setVelocityX(-this.vel);
         }
 
-        if(this.relatedScene.restarting){
+        if(this.relatedScene.restarting || this.relatedScene.win){
             this.history += "EP: " + this.relatedScene.nEpisode
              + ", W: " + this.relatedScene.sys.game.canvas.width + ", H: "  + this.relatedScene.sys.game.canvas.height + ", R: "  + this.episodeReward + "\n";
              this.lastEpisodeRewards.push(this.episodeReward);
@@ -77,7 +77,7 @@ export class Platform{
         }
          
         if(this.lastEpisodeRewards.length >= this.lastEpisodeRewardsMaxLength){
-            let row = "" + this.relatedScene.nEpisode + ", " + this.relatedScene.sys.game.canvas.width + ", "  + this.relatedScene.sys.game.canvas.height + ", " 
+            let row = "AVERAGE 100 EPISODES " + this.relatedScene.nEpisode + ", " + this.relatedScene.sys.game.canvas.width + ", "  + this.relatedScene.sys.game.canvas.height + ", " 
              + this.lastEpisodeRewards.reduce(average, 0); 
             this.history += row + "\n";
             this.lastEpisodeRewards = [];       

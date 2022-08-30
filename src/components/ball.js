@@ -58,9 +58,9 @@ export class Ball{
     impact(num){
         this.bounceInPlatform = true;
         if(num==0){
-            this.platform = this.relatedScene.platform;
+            this.platform = this.relatedScene.player1;
         }else{
-            this.platform = this.relatedScene.platform2;
+            this.platform = this.relatedScene.player2;
         }
         
     }

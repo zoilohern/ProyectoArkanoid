@@ -7,11 +7,11 @@ export class Controller{
 
     update(){
         if(this.cursors.left.isDown){
-            this.relatedScene.platform.changeAct(2)
+            this.relatedScene.player1.changeAct(2)
         }else if (this.cursors.right.isDown){
-            this.relatedScene.platform.changeAct(1)
+            this.relatedScene.player1.changeAct(1)
         }else{
-            this.relatedScene.platform.changeAct(0)
+            this.relatedScene.player1.changeAct(0)
         }
     }
 

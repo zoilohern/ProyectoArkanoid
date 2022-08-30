@@ -38,15 +38,15 @@ export class Player{
     }
 
     update(){
-        if(this.action == 0){
+       /* if(this.action == 0){
             this.setVelocityX(0)
         }else if(this.action == 1 ){
             this.setVelocityX(this.vel)
         }else if(this.action == 2){
             this.setVelocityX(-this.vel);
-        }
+        }*/
 
-        if(this.relatedScene.restarting){
+        if(this.relatedScene.end){
             this.history += "EP: " + this.relatedScene.nEpisode
              + ", W: " + this.relatedScene.sys.game.canvas.width + ", H: "  + this.relatedScene.sys.game.canvas.height + ", R: "  + this.episodeReward + "\n";
              this.lastEpisodeRewards.push(this.episodeReward);
