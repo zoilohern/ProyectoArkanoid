@@ -3,18 +3,23 @@ import { Platform } from "./components/platform.js";
 import { Algoritmo } from "./components/algoritmo1.js";
 import { Controller } from "./components/controller.js";
 
+function average(p,c,i,a){
+    return p + (c/a.length);
+}
+
 export class Game extends Phaser.Scene{
     constructor(fil,col){
         super({key: 'game'})
         this.fil = fil;
         this.col = col;      
-        this.impacthapp = false;
+        this.impacthapp1 = false;
+        this.impacthapp2 = false;
         this.simulating = false;
         this.restarting = false;
         this.controlling = false;
         this.win = false;
         this.nEpisode = 1;
-        this.grow = false;
+        this.grow = true;
     }
     
 
@@ -72,7 +77,14 @@ export class Game extends Phaser.Scene{
 
     }
 
-    tiempo(){        
+    tiempo(){
+        //console.log(this.player1.lastEpisodeRewards.length)
+        if (this.player1.lastEpisodeRewards.length>=99){
+            console.log(" LA MEDIA DE LOS ULTMOS 100 EPISODIOS " + this.player1.lastEpisodeRewards.reduce(average,0))
+        }
+        if(this.grow && this.player1.lastEpisodeRewards.length>=99 && this.player1.lastEpisodeRewards.reduce(average,0)>=100 ){
+
+                
             this.sys.game.scale.resize(this.sys.game.canvas.width + 100, this.sys.game.canvas.height + 100); 
             this.physics.world.setBounds(0, 0, this.sys.game.canvas.width, this.sys.game.canvas.height, true, true, true, true); 
             this.graphics.destroy();
@@ -82,8 +94,10 @@ export class Game extends Phaser.Scene{
             this.incrh = this.height/this.fil;
             this.dibujar();
             this.ball.reiniciar();
-            this.player1.restart();
-            this.player1.lastEpisodeRewards = [];                 
+            this.player1.restart(this.sys.canvas.width/2,this.sys.canvas.height-40);
+            this.player2.restart(this.sys.canvas.width/2,40);
+            this.player1.lastEpisodeRewards = [];  
+        }               
     }
 
     update(){
@@ -105,6 +119,8 @@ export class Game extends Phaser.Scene{
             this.restarting = true;
         }
 
+        this.tiempo();
+
         this.ball.update();
         if(this.controlling){
             this.controller.update()
@@ -115,6 +131,7 @@ export class Game extends Phaser.Scene{
         this.player1.update();
         this.player2.update();
         //this.algoritmo.aprendizaje(this.getSituacion());
+        
 
 
         if (this.restarting || this.win) {
@@ -130,12 +147,12 @@ export class Game extends Phaser.Scene{
     }
 
     impacto(){
-       this.impacthapp = true;
+       this.impacthapp1 = true;
        this.ball.impact(0);
     }
 
     impacto2(){
-        this.impacthapp = true;
+        this.impacthapp2 = true;
         this.ball.impact(1);
     }
 
@@ -147,8 +164,8 @@ export class Game extends Phaser.Scene{
         this.ball.reiniciar();
         this.algoritmo.reiniciar(this.player1);  
         this.algoritmo2.reiniciar(this.player2);
-        this.player1.restart();
-        this.player2.restart();
+        this.player1.restart(this.sys.canvas.width/2,this.sys.canvas.height-40);
+        this.player2.restart(this.sys.canvas.width/2,40);
         this.nEpisode += 1; 
     }
 
@@ -193,8 +210,8 @@ export class Game extends Phaser.Scene{
             this.graphics.lineBetween(0, i, this.width, i);
         }
 
-        this.graphics.lineStyle(25, 0x1EFA08,2)
-        this.graphics.lineBetween(this.exito-50, 0, this.exito+50, 0);
+        //this.graphics.lineStyle(25, 0x1EFA08,2)
+        //this.graphics.lineBetween(this.exito-50, 0, this.exito+50, 0);
         
     }
     

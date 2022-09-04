@@ -25,13 +25,16 @@ export class Platform{
         this.sprite.body.allowGravity = false;
         this.sprite.setCollideWorldBounds(true);
         this.sprite.angle +=this.angle;
+        this.sprite.setScale(.75);
     }
     
-    restart(){
+    restart(positx,posity){
         this.state1 = null;
         this.action1 = null;
         this.stepReward = 0;
         this.episodeReward = 0;
+        this.posx = positx;
+        this.posy = posity
         this.sprite.x = this.posx;
         this.sprite.y = this.posy;
     }

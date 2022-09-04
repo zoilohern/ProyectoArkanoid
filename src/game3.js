@@ -27,6 +27,7 @@ export class Game extends Phaser.Scene{
         this.height = this.sys.game.canvas.height;
         this.incrw = this.width/3;
         this.incrh = this.height/3;
+        this.impacthapp = false;
         this.drawBoard();
         this.board = [0,0,0,0,0,0,0,0,0];
         console.log(this.getSituation())
@@ -34,7 +35,7 @@ export class Game extends Phaser.Scene{
     }
 
     update(){
-        //if(this.spaceKey.isDown){
+        if(this.spaceKey.isDown){
         if(this.move>=5 && this.finish()!=0){ //gana alguien
             //reiniciar
             this.end = true;
@@ -50,8 +51,11 @@ export class Game extends Phaser.Scene{
                 this.algoritmo2.aprendizaje(this.player2);
                 this.algoritmo.aprendizaje(this.player1);
                 this.player1.update()
-                this.player2.update()
+                this.player2.update()  
             }
+            this.algoritmo.reiniciar(this.player1);
+            this.player1.restart()
+            this.player2.restart()
             console.log("GANA" + this.finish())
             this.clear();
             this.drawBoard();
@@ -62,8 +66,15 @@ export class Game extends Phaser.Scene{
         }else if (this.move>=9){ //(draw) empate
             this.nEpisode++
             this.end = true;
+            this.impacthapp = true;
+            this.algoritmo.aprendizaje(this.player1)
+            this.algoritmo2.aprendizaje(this.player2);
             this.player1.update()
             this.player2.update()
+            this.algoritmo.reiniciar(this.player1);
+            this.player1.restart()
+            this.player2.restart()
+            this.impacthapp = false;
             this.end = false;
             this.clear();
             this.drawBoard();
@@ -79,8 +90,8 @@ export class Game extends Phaser.Scene{
         }else{ //juega2
             this.algoritmo2.aprendizaje(this.player2);
         }
-        //console.log(this.getSituation());
-    //}
+        console.log(this.getSituation());
+    }
     }
 
     playerchoice(){
@@ -176,6 +187,7 @@ export class Game extends Phaser.Scene{
                 this.turnPlayer1 = false;
             }else{
                 this.restarting = true;
+                console.log("NODEBERIALLEGAR")
             }
         }else{
             if(this.isFree(action)){
@@ -186,6 +198,7 @@ export class Game extends Phaser.Scene{
                 this.turnPlayer1 = true;
             }else{
                 this.win = true;
+                console.log("ABACCHIO")
             }
         }
     }

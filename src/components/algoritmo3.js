@@ -85,7 +85,7 @@ export class Algoritmo {
     }
 
     tiempo(){
-        console.log("tabla Q = " + JSON.stringify(this.Q));
+        //console.log("tabla Q = " + JSON.stringify(this.Q));
     }
 
 
@@ -112,7 +112,7 @@ export class Algoritmo {
 
         if (this.relatedScene.impacthapp){
           this.addReward(50,element);
-          this.relatedScene.impacthapp = false;
+          //this.relatedScene.impacthapp = false;
         }
         if(this.relatedScene.restarting && element.angle == 0){
           this.addReward(-10000,element);
@@ -130,14 +130,17 @@ export class Algoritmo {
         if(element.state1 == null){
           element.state1 = element.getState();
           element.action1 = this.elegir_Accion(element.state1);
+          while(!this.relatedScene.isFree(element.action1)){
+            element.action1 = this.elegir_Accion(element.state1);
+          }
         }else{
           let state2 = element.getState();
           //if(state2!=element.state1){ // comprobar si se ejecuta en caso de reiniciar??
               let action2 = this.elegir_Accion(state2);
-              //while(!this.relatedScene.isFree(action2)){ COMPROBAR si no se queda atascado
-                 //action2 = this.elegir_Accion(state2);
-                 //console.log("quizas stuck")
-              //}
+              while(!this.relatedScene.end && !this.relatedScene.isFree(action2)){ 
+                 action2 = this.elegir_Accion(state2);
+                // console.log("quizas stuck")
+              }
               //console.log(element.stepReward);
               this.Q.updateQTable(element.state1, state2, element.stepReward,element.action1,action2);
               element.stepReward = 0;
