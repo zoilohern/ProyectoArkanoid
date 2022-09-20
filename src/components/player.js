@@ -9,6 +9,8 @@ export class Player{
         this.action = -1;
         this.state1 = null;
         this.action1 = null;
+        this.state0 = null;
+        this.action0 = null
         this.stepReward = 0;
         this.episodeReward = 0;
         this.history = "";
@@ -25,6 +27,8 @@ export class Player{
     restart(){
         this.state1 = null;
         this.action1 = null;
+        this.state0 = null;
+        this.action0 = null
         this.stepReward = 0;
         this.episodeReward = 0;
     }
@@ -47,15 +51,15 @@ export class Player{
         }*/
 
         if(this.relatedScene.end){
-            this.history += "EP: " + this.relatedScene.nEpisode
-             + ", W: " + this.relatedScene.sys.game.canvas.width + ", H: "  + this.relatedScene.sys.game.canvas.height + ", R: "  + this.episodeReward + "\n";
+            /*this.history += "" + this.relatedScene.nEpisode
+             + "," + this.relatedScene.sys.game.canvas.width + ","  + this.relatedScene.sys.game.canvas.height + ","  + this.episodeReward + "\n";*/
              this.lastEpisodeRewards.push(this.episodeReward);
              //this.episodeReward = 0;  se hace en el algoritmo
              
         }
          
         if(this.lastEpisodeRewards.length >= this.lastEpisodeRewardsMaxLength){
-            let row = "" + this.relatedScene.nEpisode + ", " + this.relatedScene.sys.game.canvas.width + ", "  + this.relatedScene.sys.game.canvas.height + ", " 
+            let row = "" + this.relatedScene.nEpisode + "; " + this.relatedScene.sys.game.canvas.width + "; "  + this.relatedScene.sys.game.canvas.height + "; " 
              + this.lastEpisodeRewards.reduce(average, 0); 
             this.history += row + "\n";
             this.lastEpisodeRewards = [];       

@@ -25,14 +25,31 @@ export class Platform{
         this.sprite.body.allowGravity = false;
         this.sprite.setCollideWorldBounds(true);
         this.sprite.angle +=this.angle;
-        this.sprite.setScale(.75);
+        //this.sprite.setScale(.75);
     }
     
     restart(positx,posity){
+        
+        if(this.relatedScene.restarting || this.relatedScene.win){ // EP:, W:, H:, R:
+            /*this.history += "" + this.relatedScene.nEpisode
+             + ", " + this.relatedScene.sys.game.canvas.width + ", "  + this.relatedScene.sys.game.canvas.height + ", "  + this.episodeReward + "\n";*/
+             this.lastEpisodeRewards.push(this.episodeReward);
+             
+             //this.episodeReward = 0;  se hace en el algoritmo
+
+             if(this.lastEpisodeRewards.length >= this.lastEpisodeRewardsMaxLength){
+                let row = "" + this.relatedScene.nEpisode + "; " + this.relatedScene.sys.game.canvas.width + "; "  + this.relatedScene.sys.game.canvas.height + "; " 
+                 + this.lastEpisodeRewards.reduce(average, 0); 
+                 
+                this.history += row + "\n";
+                //this.lastEpisodeRewards = [];       
+            }      
+        }       
+
         this.state1 = null;
         this.action1 = null;
         this.stepReward = 0;
-        this.episodeReward = 0;
+        //this.episodeReward = 0;
         this.posx = positx;
         this.posy = posity
         this.sprite.x = this.posx;
@@ -70,21 +87,7 @@ export class Platform{
         }else if(this.action == 2){
             this.setVelocityX(-this.vel);
         }
-
-        if(this.relatedScene.restarting || this.relatedScene.win){
-            this.history += "EP: " + this.relatedScene.nEpisode
-             + ", W: " + this.relatedScene.sys.game.canvas.width + ", H: "  + this.relatedScene.sys.game.canvas.height + ", R: "  + this.episodeReward + "\n";
-             this.lastEpisodeRewards.push(this.episodeReward);
-             //this.episodeReward = 0;  se hace en el algoritmo
-             
-        }
-         
-        if(this.lastEpisodeRewards.length >= this.lastEpisodeRewardsMaxLength){
-            let row = "AVERAGE 100 EPISODES " + this.relatedScene.nEpisode + ", " + this.relatedScene.sys.game.canvas.width + ", "  + this.relatedScene.sys.game.canvas.height + ", " 
-             + this.lastEpisodeRewards.reduce(average, 0); 
-            this.history += row + "\n";
-            this.lastEpisodeRewards = [];       
-        }
+        //console.log(this.episodeReward)
     }
 
     changeAct(act){

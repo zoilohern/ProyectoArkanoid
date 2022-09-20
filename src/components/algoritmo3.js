@@ -115,16 +115,17 @@ export class Algoritmo {
           //this.relatedScene.impacthapp = false;
         }
         if(this.relatedScene.restarting && element.angle == 0){
-          this.addReward(-10000,element);
-          this.relatedScene.restarting = false;
+          this.addReward(-100,element);
+          
         }else if (this.relatedScene.restarting){
           this.addReward(100,element);
-        }
+          this.relatedScene.restarting = false;
+        } 
         if(this.relatedScene.win && element.angle == 0){
           this.addReward(100,element);
           
         }else if (this.relatedScene.win){
-          this.addReward(-10000,element);
+          this.addReward(-100,element);
           this.relatedScene.win = false;
         }
         if(element.state1 == null){
@@ -132,6 +133,7 @@ export class Algoritmo {
           element.action1 = this.elegir_Accion(element.state1);
           while(!this.relatedScene.isFree(element.action1)){
             element.action1 = this.elegir_Accion(element.state1);
+            
           }
         }else{
           let state2 = element.getState();
@@ -139,11 +141,19 @@ export class Algoritmo {
               let action2 = this.elegir_Accion(state2);
               while(!this.relatedScene.end && !this.relatedScene.isFree(action2)){ 
                  action2 = this.elegir_Accion(state2);
+
                 // console.log("quizas stuck")
               }
               //console.log(element.stepReward);
-              this.Q.updateQTable(element.state1, state2, element.stepReward,element.action1,action2);
+              //if(!this.relatedScene.end){
+                this.Q.updateQTable(element.state1, state2, element.stepReward,element.action1,action2);
+              //}else{
+                //this.Q.updateQTable(element.state0, element.state1, element.stepReward,element.action0,element.action1);
+              //}
+              
               element.stepReward = 0;
+              element.state0 = element.state1;
+              element.action0 = element.action1;
               element.state1 = state2;
               element.action1 = action2;
           //}

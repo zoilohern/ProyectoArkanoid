@@ -10,7 +10,7 @@ export class Ball{
     }
 
     create(){
-        this.sprite = this.relatedScene.physics.add.image(this.relatedScene.width/2,this.relatedScene.height/5,'ball');
+        this.sprite = this.relatedScene.physics.add.image(this.relatedScene.width/2,this.relatedScene.height/2,'ball'); // height /5
         this.sprite.tint = 0x00FFF77;
         this.sprite.setCollideWorldBounds(true);
         this.sprite.setBounce(1);
@@ -50,7 +50,7 @@ export class Ball{
 
     setVelocities(){
         const initialXSpeed = (Math.random() * 500 + 50) * (this.randomTwo()); //450 / (Math.floor(Math.random() * 1000)) * this.randomTwo(); //* (this.randomTwo());
-        const initialYSpeed = Math.random() * 300 + 200; //450;
+        const initialYSpeed = (Math.random() * 300 + 200) * (this.randomTwo()); //450;
         this.sprite.setVelocityX(initialXSpeed);
         this.sprite.setVelocityY(initialYSpeed);
     }
@@ -67,7 +67,7 @@ export class Ball{
 
     reiniciar(){
         this.sprite.x = this.relatedScene.width/2;
-        this.sprite.y = this.relatedScene.height/5;
+        this.sprite.y = this.relatedScene.height/2;
         this.setVelocities();
     }
 
@@ -83,10 +83,10 @@ export class Ball{
     randomTwo(){
         let valor = this.getRndInteger(0,1);
         if(valor==0){
-            console.log(-1);
+            //console.log(-1);
             return -1;
         }else{
-            console.log(1);
+            //console.log(1);
             return 1;
         }
     }

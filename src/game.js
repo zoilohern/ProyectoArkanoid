@@ -19,12 +19,12 @@ export class Game extends Phaser.Scene{
         this.controlling = false;
         this.win = false;
         this.nEpisode = 1;
-        this.grow = true;
+        this.grow = false;
     }
     
 
     init(){
-        this.ball = new Ball(this,400,200);
+        this.ball = new Ball(this,this.sys.canvas.width/2,this.sys.canvas.height/2);
         this.player1 = new Platform(this,this.sys.canvas.width/2,this.sys.canvas.height-40,0);
         this.player2 = new Platform(this,this.sys.canvas.width/2,40,180);
         this.algoritmo = new Algoritmo(this,this.fil,this.col,3);
@@ -77,29 +77,6 @@ export class Game extends Phaser.Scene{
 
     }
 
-    tiempo(){
-        //console.log(this.player1.lastEpisodeRewards.length)
-        if (this.player1.lastEpisodeRewards.length>=99){
-            console.log(" LA MEDIA DE LOS ULTMOS 100 EPISODIOS " + this.player1.lastEpisodeRewards.reduce(average,0))
-        }
-        if(this.grow && this.player1.lastEpisodeRewards.length>=99 && this.player1.lastEpisodeRewards.reduce(average,0)>=100 ){
-
-                
-            this.sys.game.scale.resize(this.sys.game.canvas.width + 100, this.sys.game.canvas.height + 100); 
-            this.physics.world.setBounds(0, 0, this.sys.game.canvas.width, this.sys.game.canvas.height, true, true, true, true); 
-            this.graphics.destroy();
-            this.width = this.sys.game.canvas.width;
-            this.height = this.sys.game.canvas.height;
-            this.incrw = this.width/this.col;
-            this.incrh = this.height/this.fil;
-            this.dibujar();
-            this.ball.reiniciar();
-            this.player1.restart(this.sys.canvas.width/2,this.sys.canvas.height-40);
-            this.player2.restart(this.sys.canvas.width/2,40);
-            this.player1.lastEpisodeRewards = [];  
-        }               
-    }
-
     update(){
         if (this.spaceKey.isDown && !this.pausado) {
             this.scene.pause();
@@ -119,7 +96,6 @@ export class Game extends Phaser.Scene{
             this.restarting = true;
         }
 
-        this.tiempo();
 
         this.ball.update();
         if(this.controlling){
@@ -135,8 +111,8 @@ export class Game extends Phaser.Scene{
 
 
         if (this.restarting || this.win) {
-          this.restarting = false;
-          this.win = false;
+          //this.restarting = false;
+          //this.win = false;
           this.reiniciar();
         }
 
@@ -162,16 +138,39 @@ export class Game extends Phaser.Scene{
 
     reiniciar(){
         this.ball.reiniciar();
-        this.algoritmo.reiniciar(this.player1);  
-        this.algoritmo2.reiniciar(this.player2);
         this.player1.restart(this.sys.canvas.width/2,this.sys.canvas.height-40);
         this.player2.restart(this.sys.canvas.width/2,40);
-        this.nEpisode += 1; 
+        this.algoritmo.reiniciar(this.player1);  
+        this.algoritmo2.reiniciar(this.player2);
+        this.nEpisode += 1;
+        this.restarting = false;
+        this.win = false; 
+        if(this.grow && this.sys.game.canvas.width < 600 && this.player1.lastEpisodeRewards.length>=100 && this.player1.lastEpisodeRewards.reduce(average,0)>=100 ){
+            console.log("CRECEMOS")           
+                
+            this.sys.game.scale.resize(this.sys.game.canvas.width + 10, this.sys.game.canvas.height + 10); 
+            this.physics.world.setBounds(0, 0, this.sys.game.canvas.width, this.sys.game.canvas.height, true, true, true, true); 
+            this.graphics.destroy();
+            this.width = this.sys.game.canvas.width;
+            this.height = this.sys.game.canvas.height;
+            this.incrw = this.width/this.col;
+            this.incrh = this.height/this.fil;
+            this.dibujar();
+            this.ball.reiniciar();  
+            this.player1.restart(this.sys.canvas.width/2,this.sys.canvas.height-40);
+            this.player2.restart(this.sys.canvas.width/2,40);
+            
+        }
+        if(this.player1.lastEpisodeRewards.length>=100){
+            console.log(" LA MEDIA DE LOS ULTIMOS 100 EPISODIOS " + this.player1.lastEpisodeRewards.reduce(average,0)) 
+            this.player1.lastEpisodeRewards = [];  
+            this.player2.lastEpisodeRewards = []; 
+        }
+        
     }
 
     controll(){
         this.controlling = !this.controlling;
-        console.log("Se pulso")
     }
 
     //dadas las posiciones de la bola y la plataforma, devuelve un numero que representa la situacion en la que estamos

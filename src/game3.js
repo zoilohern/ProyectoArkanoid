@@ -35,23 +35,29 @@ export class Game extends Phaser.Scene{
     }
 
     update(){
-        if(this.spaceKey.isDown){
+        //if(this.spaceKey.isDown){            
         if(this.move>=5 && this.finish()!=0){ //gana alguien
             //reiniciar
             this.end = true;
             this.nEpisode++;
             if(this.finish()==1){
                 this.win = true;
-                this.algoritmo.aprendizaje(this.player1)
+                if(!this.controlling){
+                    this.algoritmo.aprendizaje(this.player1)
+                }  
                 this.algoritmo2.aprendizaje(this.player2);
                 this.player1.update()
                 this.player2.update()
+                this.win = false;
             }else{
                 this.restarting = true;
+                if(!this.controlling){
+                    this.algoritmo.aprendizaje(this.player1)
+                }  
                 this.algoritmo2.aprendizaje(this.player2);
-                this.algoritmo.aprendizaje(this.player1);
                 this.player1.update()
                 this.player2.update()  
+                this.restarting = false;
             }
             this.algoritmo.reiniciar(this.player1);
             this.player1.restart()
@@ -67,7 +73,9 @@ export class Game extends Phaser.Scene{
             this.nEpisode++
             this.end = true;
             this.impacthapp = true;
-            this.algoritmo.aprendizaje(this.player1)
+            if(!this.controlling){
+                this.algoritmo.aprendizaje(this.player1)
+            }            
             this.algoritmo2.aprendizaje(this.player2);
             this.player1.update()
             this.player2.update()
@@ -87,11 +95,12 @@ export class Game extends Phaser.Scene{
             }else{
                 this.algoritmo.aprendizaje(this.player1)
             }
+            
         }else{ //juega2
             this.algoritmo2.aprendizaje(this.player2);
         }
-        console.log(this.getSituation());
-    }
+       
+    //}
     }
 
     playerchoice(){
@@ -108,7 +117,6 @@ export class Game extends Phaser.Scene{
                         game.move++;
                         game.turnPlayer1 = false;
                         correct = true;
-                        console.log("hola")
                     }
                     
                 //}
@@ -126,14 +134,14 @@ export class Game extends Phaser.Scene{
 
     finish(){
         if(this.checkRow()!=0){
-            console.log("ROW")
+            //console.log("ROW")
             return this.checkRow();
             
         }else if (this.checkCol()!=0){
-            console.log("COL")
+            //console.log("COL")
             return this.checkCol();
         }else if(this.checkDiag()!=0){
-            console.log("DIAG")
+            //console.log("DIAG")
             return this.checkDiag();
         }else{
             return 0;
@@ -187,7 +195,6 @@ export class Game extends Phaser.Scene{
                 this.turnPlayer1 = false;
             }else{
                 this.restarting = true;
-                console.log("NODEBERIALLEGAR")
             }
         }else{
             if(this.isFree(action)){
@@ -198,7 +205,6 @@ export class Game extends Phaser.Scene{
                 this.turnPlayer1 = true;
             }else{
                 this.win = true;
-                console.log("ABACCHIO")
             }
         }
     }

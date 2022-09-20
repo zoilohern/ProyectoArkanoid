@@ -1,13 +1,13 @@
-//import { Game } from './src/game.js';
+import { Game } from './src/game.js';
 //import { Game } from './src/game2.js'
-import { Game } from './src/game3.js'
+//import { Game } from './src/game3.js'
 //import { Game } from './src/gameshared.js'
 import { QTable } from './src/components/algoritmo1.js'
 
 const config = {
     type: Phaser.AUTO,
-    width: 200,
-    height: 200,
+    width: 400,
+    height: 400,
     scene: [new Game(8,8)],
     physics:{
         default: 'arcade',
@@ -60,7 +60,7 @@ document.getElementById("start_simulation").onclick = function() {
 document.getElementById("stop_simulation").onclick = function() {
     game.simulating = false;
     console.log("STOPPING SIMULATION"); 
-    game.stopSimulation()  
+    game.stopSimulation()
 };
 
 document.getElementById("change_player").onclick = function(){
@@ -72,20 +72,22 @@ document.getElementById("download_history").onclick = function() {
 }; 
 
 document.getElementById("download_algorithm").onclick = function() { 
-  download(JSON.stringify(game.scene.getScene("game").algoritmo.Q), 'text/plain', "algorithm.txt"); 
+  download(JSON.stringify(game.scene.getScene("game").algoritmo.Q.Q), 'text/plain', "algorithm.txt"); 
 }; 
 
 document.getElementById("load_algorithm").onclick = function() { 
   try { 
+    console.log(game.scene.getScene("game").algoritmo.Q)
     const reader = new FileReader();
     let file = document.getElementById("algorithm_json").files[0]; 
     reader.readAsText(file); 
     reader.onload = function() { 
       let loaded = reader.result; 
-      //console.log(game.scene.getScene("game").algoritmo.Q)
-      game.scene.getScene("game").algoritmo.Q = new QTable(3,JSON.parse(loaded)); 
-      //console.log(game.scene.getScene("game").algoritmo.Q)
+      console.log(game.scene.getScene("game").algoritmo.Q)
+      game.scene.getScene("game").algoritmo.Q.Q = JSON.parse(loaded)
+      console.log(game.scene.getScene("game").algoritmo.Q)
       console.log("LOAD Q = " + loaded); 
+      game.scene.getScene("game").reiniciar();
     }        
   } catch(err) { 
        console.error("ERROR: " + err);
