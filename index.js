@@ -1,7 +1,7 @@
-import { Game } from './src/game.js';
+//import { Game } from './src/game.js';
 //import { Game } from './src/game2.js'
 //import { Game } from './src/game3.js'
-//import { Game } from './src/gameshared.js'
+import { Game } from './src/gameshared.js'
 import { QTable } from './src/components/algoritmo1.js'
 
 const config = {
@@ -83,9 +83,9 @@ document.getElementById("load_algorithm").onclick = function() {
     reader.readAsText(file); 
     reader.onload = function() { 
       let loaded = reader.result; 
-      console.log(game.scene.getScene("game").algoritmo.Q)
+      //console.log(game.scene.getScene("game").algoritmo.Q)
       game.scene.getScene("game").algoritmo.Q.Q = JSON.parse(loaded)
-      console.log(game.scene.getScene("game").algoritmo.Q)
+      //console.log(game.scene.getScene("game").algoritmo.Q)
       console.log("LOAD Q = " + loaded); 
       game.scene.getScene("game").reiniciar();
     }        

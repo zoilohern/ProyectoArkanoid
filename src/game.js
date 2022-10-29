@@ -19,13 +19,15 @@ export class Game extends Phaser.Scene{
         this.controlling = false;
         this.win = false;
         this.nEpisode = 1;
-        this.grow = false;
+        this.grow = true;
     }
     
 
     init(){
         this.ball = new Ball(this,this.sys.canvas.width/2,this.sys.canvas.height/2);
+        //this.player1 = new Platform(this,this.sys.canvas.width/2,(this.sys.canvas.height-(this.sys.canvas.height/(this.fil)))+(this.sys.canvas.height/(this.fil*2)),0);
         this.player1 = new Platform(this,this.sys.canvas.width/2,this.sys.canvas.height-40,0);
+        //this.player2 = new Platform(this,this.sys.canvas.width/2,(this.sys.canvas.height/(this.fil))/2,180);
         this.player2 = new Platform(this,this.sys.canvas.width/2,40,180);
         this.algoritmo = new Algoritmo(this,this.fil,this.col,3);
         this.algoritmo2 = new Algoritmo(this,this.fil,this.col,3);
@@ -155,7 +157,7 @@ export class Game extends Phaser.Scene{
             this.height = this.sys.game.canvas.height;
             this.incrw = this.width/this.col;
             this.incrh = this.height/this.fil;
-            this.dibujar();
+            //this.dibujar();
             this.ball.reiniciar();  
             this.player1.restart(this.sys.canvas.width/2,this.sys.canvas.height-40);
             this.player2.restart(this.sys.canvas.width/2,40);
@@ -163,6 +165,7 @@ export class Game extends Phaser.Scene{
         }
         if(this.player1.lastEpisodeRewards.length>=100){
             console.log(" LA MEDIA DE LOS ULTIMOS 100 EPISODIOS " + this.player1.lastEpisodeRewards.reduce(average,0)) 
+            console.log(" LA MEDIA DE LOS ULTIMOS 100 EPISODIOS " + this.player2.lastEpisodeRewards.reduce(average,0))
             this.player1.lastEpisodeRewards = [];  
             this.player2.lastEpisodeRewards = []; 
         }

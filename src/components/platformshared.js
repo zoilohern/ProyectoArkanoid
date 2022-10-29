@@ -54,9 +54,9 @@ export class Platform{
             this.setVelocityX(-this.vel);
         }
 
-        if(this.relatedScene.restarting){
-            this.history += "EP: " + this.relatedScene.nEpisode
-             + ", W: " + this.relatedScene.sys.game.canvas.width + ", H: "  + this.relatedScene.sys.game.canvas.height + ", R: "  + this.episodeReward + "\n";
+        if(this.relatedScene.restarting || this.relatedScene.win){
+            //this.history += "EP: " + this.relatedScene.nEpisode
+             //+ ", W: " + this.relatedScene.sys.game.canvas.width + ", H: "  + this.relatedScene.sys.game.canvas.height + ", R: "  + this.episodeReward + "\n";
              this.lastEpisodeRewards.push(this.episodeReward);
              //this.episodeReward = 0;  se hace en el algoritmo
              
@@ -66,7 +66,9 @@ export class Platform{
             let row = "" + this.relatedScene.nEpisode + ", " + this.relatedScene.sys.game.canvas.width + ", "  + this.relatedScene.sys.game.canvas.height + ", " 
              + this.lastEpisodeRewards.reduce(average, 0); 
             this.history += row + "\n";
-            this.lastEpisodeRewards = [];       
+            //console.log("EPISODIO: " + this.relatedScene.nEpisode + "   ELEMENT: " + this.angle + " || " + this.lastEpisodeRewards.reduce(average, 0)) 
+            this.lastEpisodeRewards = [];  
+                
         }
     }   
 

@@ -35,7 +35,7 @@ export class Game extends Phaser.Scene{
     }
 
     update(){
-        //if(this.spaceKey.isDown){            
+        if(this.spaceKey.isDown){            
         if(this.move>=5 && this.finish()!=0){ //gana alguien
             //reiniciar
             this.end = true;
@@ -100,7 +100,7 @@ export class Game extends Phaser.Scene{
             this.algoritmo2.aprendizaje(this.player2);
         }
        
-    //}
+    }
     }
 
     playerchoice(){

@@ -1,5 +1,5 @@
 import { Ball } from "./components/ball.js";
-import { Platform } from "./components/platform.js";
+import { Platform } from "./components/platform2.js";
 import { Algoritmo } from "./components/algoritmo2.js";
 import { Controller } from "./components/controller.js";
 
@@ -68,7 +68,7 @@ export class Game extends Phaser.Scene{
         
         this.cursors = this.input.keyboard.createCursorKeys();      
         this.controller = new Controller(this,this.cursors);  
-        var timer = this.time.delayedCall(5000,this.tiempo,null,this)
+        //var timer = this.time.delayedCall(5000,this.tiempo,null,this)
 
     }
 
@@ -92,20 +92,7 @@ export class Game extends Phaser.Scene{
             this.pausado = true;
         } 
 
-
-        // Touch objective
-        /*if (this.ball.get().body.y==0 && (Math.abs(this.ball.get().body.x-this.exito))<50) {
-           // this.algoritmo.addReward(100);
-           this.win = true;
-        } SUSTITUIDO POR IMPACTO2*/ 
-        
-        // Touch ball
-       /* if (this.impacthapp) {
-          this.algoritmo.addReward(50);
-          this.impacthapp = false;
-        }*/
-
-        // Loose
+        // Lose
         if (this.ball.get().body.y>this.player1.get().body.y-5) {
             //this.algoritmo.addReward(-10000);
             this.restarting = true;
@@ -122,7 +109,7 @@ export class Game extends Phaser.Scene{
 
 
         if (this.restarting) {
-          this.restarting = false;
+          //this.restarting = false;
           this.reiniciar();
         }
 
@@ -149,9 +136,10 @@ export class Game extends Phaser.Scene{
 
     reiniciar(){
         this.ball.reiniciar();
-        this.algoritmo.reiniciar(this.player1); 
-        this.player1.restart(); 
+        this.player1.restart(this.sys.canvas.width/2,this.sys.canvas.height-40);
+        this.algoritmo.reiniciar(this.player1);          
         this.nEpisode += 1; 
+        this.restarting = false;
     }
 
     controll(){

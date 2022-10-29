@@ -20,8 +20,8 @@ export class StrategyUpperPlatform{
        }       
        ball_vy = -ball_vy;
        //let posy = (this.relatedScene.sys.game.canvas.height - 1) - this.relatedScene.ball.coordenadas()[1]  
-       let posy = (this.relatedScene.fil  - 1) - this.relatedScene.ball.coordenadas()[1]  
-       let res = "_" + this.relatedScene.ball.coordenadas()[0] + "_" + posy + "_" + this.relatedScene.platform2.coordenada()
+       let posy = (this.relatedScene.col  - 1) - this.relatedScene.ball.coordenadas()[0]  
+       let res = "_" + posy + "_" + this.relatedScene.ball.coordenadas()[1] +  "_" + this.relatedScene.player2.coordenada()
         + "_"  + ball_vx + "_" + ball_vy;
        return res;
     }

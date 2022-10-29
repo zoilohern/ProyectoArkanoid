@@ -85,7 +85,7 @@ export class Algoritmo {
     }
 
     tiempo(){
-        console.log("tabla Q = " + JSON.stringify(this.Q));
+        //console.log("tabla Q = " + JSON.stringify(this.Q));
     }
 
 
@@ -115,7 +115,7 @@ export class Algoritmo {
           this.relatedScene.impacthapp = false;
         }
         if(this.relatedScene.restarting){
-          this.addReward(-10000,element);
+          this.addReward(-100,element);
         }
         if(this.relatedScene.win){
           this.addReward(100,element);

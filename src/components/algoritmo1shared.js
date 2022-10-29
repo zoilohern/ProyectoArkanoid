@@ -85,15 +85,17 @@ export class Algoritmo {
     }
 
     tiempo(){
-        console.log("tabla Q = " + JSON.stringify(this.Q));
+        //console.log("tabla Q = " + JSON.stringify(this.Q));
     }
 
 
 
     reiniciar(element){
-        console.log("END episode = " + this.nEpisode + " reward = " + element.episodeReward); //total reward in episode
+        console.log("END episode = " + this.nEpisode + " reward = " + element.episodeReward + " element= " + element.angle); //total reward in episode
         this.total_reward = 0;
-        this.nEpisode += 1;
+        if(element.angle!=0){
+          this.nEpisode += 1;
+        }        
         element.episodeReward = 0; //SE HACE EN PLATFORM (ELEMENTO)
     }
 
@@ -110,12 +112,17 @@ export class Algoritmo {
 
     aprendizaje(element){
 
-        if (this.relatedScene.impacthapp){
+        if (this.relatedScene.impacthapp1 && element.angle == 0){
           this.addReward(50,element);
-          this.relatedScene.impacthapp = false;
+          this.relatedScene.impacthapp1 = false;
+        }
+
+        if (this.relatedScene.impacthapp2 && element.angle != 0){
+          this.addReward(50,element);
+          this.relatedScene.impacthapp2 = false;
         }
         if(this.relatedScene.restarting && element.angle == 0){
-          this.addReward(-10000,element);
+          this.addReward(-100,element);
         }else if (this.relatedScene.restarting){
           this.addReward(100,element);
         }
@@ -123,13 +130,14 @@ export class Algoritmo {
           this.addReward(100,element);
           //this.relatedScene.win = false;
         }else if (this.relatedScene.win){
-          this.addReward(-10000,element);
+          this.addReward(-100,element);
         }
         if(element.state1 == null){
           element.state1 = element.getState();
           element.action1 = this.elegir_Accion(element.state1);
         }else{
           let state2 = element.getState();
+          
           if(state2!=element.state1){ // comprobar si se ejecuta en caso de reiniciar??
               let action2 = this.elegir_Accion(state2);
               //console.log(element.stepReward);

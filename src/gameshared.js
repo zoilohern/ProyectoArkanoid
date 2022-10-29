@@ -10,7 +10,8 @@ export class Game extends Phaser.Scene{
         super({key: 'game'})
         this.fil = fil;
         this.col = col;      
-        this.impacthapp = false;
+        this.impacthapp1 = false;
+        this.impacthapp2 = false;
         this.simulating = false;
         this.restarting = false;
         this.controlling = false;
@@ -50,7 +51,7 @@ export class Game extends Phaser.Scene{
         this.player2.create();
         
         this.exito = this.getRndInteger(50,this.width-50);
-        this.dibujar();
+        //this.dibujar();
         this.posPlat = this.player1.coordenada();
         this.posBola = this.ball.coordenadas();
         console.log(this.posPlat)
@@ -70,7 +71,7 @@ export class Game extends Phaser.Scene{
         
         this.cursors = this.input.keyboard.createCursorKeys();      
         this.controller = new Controller(this,this.cursors);  
-        var timer = this.time.delayedCall(5000,this.tiempo,null,this)
+       // var timer = this.time.delayedCall(5000,this.tiempo,null,this)
 
     }
 
@@ -133,12 +134,12 @@ export class Game extends Phaser.Scene{
     }
 
     impacto(){
-       this.impacthapp = true;
+       this.impacthapp1 = true;
        this.ball.impact(0);
     }
 
     impacto2(){
-        this.impacthapp = true;
+        this.impacthapp2 = true;
         this.ball.impact(1);
     }
 
