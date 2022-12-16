@@ -118,7 +118,7 @@ export class Algoritmo {
           this.relatedScene.impacthapp2 = false;
         }
         if(this.relatedScene.restarting && element.angle == 0){
-          this.addReward(-100,element); // he cambiado de -10000 a -1000
+          this.addReward(-100,element); 
         }else if (this.relatedScene.restarting){
           this.addReward(100,element);
         }

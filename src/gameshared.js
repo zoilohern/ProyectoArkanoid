@@ -197,8 +197,8 @@ export class Game extends Phaser.Scene{
             this.graphics.lineBetween(0, i, this.width, i);
         }
 
-        this.graphics.lineStyle(25, 0x1EFA08,2)
-        this.graphics.lineBetween(this.exito-50, 0, this.exito+50, 0);
+        //this.graphics.lineStyle(25, 0x1EFA08,2)
+        //this.graphics.lineBetween(this.exito-50, 0, this.exito+50, 0);
         
     }
     

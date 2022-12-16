@@ -19,7 +19,7 @@ export class Game extends Phaser.Scene{
         this.controlling = false;
         this.win = false;
         this.nEpisode = 1;
-        this.grow = true;
+        this.grow = false;
     }
     
 

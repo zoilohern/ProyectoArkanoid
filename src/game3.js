@@ -60,6 +60,7 @@ export class Game extends Phaser.Scene{
                 this.restarting = false;
             }
             this.algoritmo.reiniciar(this.player1);
+            this.algoritmo2.reiniciar(this.player2);
             this.player1.restart()
             this.player2.restart()
             console.log("GANA" + this.finish())
@@ -80,6 +81,7 @@ export class Game extends Phaser.Scene{
             this.player1.update()
             this.player2.update()
             this.algoritmo.reiniciar(this.player1);
+            this.algoritmo2.reiniciar(this.player2);    
             this.player1.restart()
             this.player2.restart()
             this.impacthapp = false;

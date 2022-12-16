@@ -1,13 +1,13 @@
-//import { Game } from './src/game.js';
+import { Game } from './src/game.js';
 //import { Game } from './src/game2.js'
 //import { Game } from './src/game3.js'
-import { Game } from './src/gameshared.js'
+//import { Game } from './src/gameshared.js'
 import { QTable } from './src/components/algoritmo1.js'
 
 const config = {
     type: Phaser.AUTO,
-    width: 400,
-    height: 400,
+    width: 200,
+    height: 200,
     scene: [new Game(8,8)],
     physics:{
         default: 'arcade',
