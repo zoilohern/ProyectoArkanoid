@@ -5,9 +5,9 @@ export class Ball{
         this.bounceInPlatform = false;
         this.platform = null;
         this.minvx = 200;
-        this.maxvx = 300;
+        this.maxvx = 350;
         this.minvy = 200;
-        this.maxvy = 280;
+        this.maxvy = 350;
         /*this.posx = posx;
         this.posy = posy;*/
 
@@ -58,6 +58,7 @@ export class Ball{
         const initialXSpeed = (Math.floor(Math.random() * (this.maxvx - this.minvx + 1) + this.minvx)) * (this.randomTwo()); //450 / (Math.floor(Math.random() * 1000)) * this.randomTwo(); //* (this.randomTwo());
         const initialYSpeed = (Math.floor(Math.random() * (this.maxvy - this.minvy + 1) + this.minvy)) * (this.randomTwo()); //450;
         //con la formula que se usa se dan velocidades entre max y min.
+        //console.log(initialXSpeed + " " + initialYSpeed)
         //Math.floor(Math.random() * (max - min + 1) + min)
         // Antes (Math.random() * 500 + 50) * this.randomtwo
         this.setVelocityX(initialXSpeed)

@@ -21,7 +21,7 @@ export class Game extends Phaser.Scene{
     init(){
         this.ball = new Ball(this,400,200);
         this.player1 = new Platform(this,this.sys.canvas.width/2,this.sys.canvas.height-40,0);
-        this.player2 = new Platform(this,this.sys.canvas.width/2,10,180);
+        this.player2 = new Platform(this,this.sys.canvas.width/2,40,180);
         this.algoritmo = new Algoritmo(this,this.fil,this.col,3);
         
     }

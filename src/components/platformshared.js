@@ -28,13 +28,24 @@ export class Platform{
         this.sprite.angle +=this.angle;
     }
     
-    restart(){
+    restart(positx,posity){
         this.state1 = null;
         this.action1 = null;
         this.stepReward = 0;
         this.episodeReward = 0;
+        this.posx = positx;
+        this.posy = posity;
         this.sprite.x = this.posx;
         this.sprite.y = this.posy;
+        if(this.lastEpisodeRewards.length >= this.lastEpisodeRewardsMaxLength){
+            let row = "" + this.relatedScene.nEpisode + "; " + this.relatedScene.sys.game.canvas.width + "; "  + this.relatedScene.sys.game.canvas.height + "; " 
+             + this.lastEpisodeRewards.reduce(average, 0); 
+            this.history += row + "\n";
+            //console.log("SE ESCRIBE EN EL TXT")
+            //console.log("EPISODIO: " + this.relatedScene.nEpisode + "   ELEMENT: " + this.angle + " || " + this.lastEpisodeRewards.reduce(average, 0)) 
+            this.lastEpisodeRewards = [];  
+                
+        }
     }
 
     get(){
@@ -58,18 +69,18 @@ export class Platform{
             //this.history += "EP: " + this.relatedScene.nEpisode
              //+ ", W: " + this.relatedScene.sys.game.canvas.width + ", H: "  + this.relatedScene.sys.game.canvas.height + ", R: "  + this.episodeReward + "\n";
              this.lastEpisodeRewards.push(this.episodeReward);
-             //this.episodeReward = 0;  se hace en el algoritmo
+             //this.episodeReward = 0;  //se hace en el algoritmo
              
         }
          
-        if(this.lastEpisodeRewards.length >= this.lastEpisodeRewardsMaxLength){
+        /*if(this.lastEpisodeRewards.length >= this.lastEpisodeRewardsMaxLength){
             let row = "" + this.relatedScene.nEpisode + "; " + this.relatedScene.sys.game.canvas.width + "; "  + this.relatedScene.sys.game.canvas.height + "; " 
              + this.lastEpisodeRewards.reduce(average, 0); 
             this.history += row + "\n";
             //console.log("EPISODIO: " + this.relatedScene.nEpisode + "   ELEMENT: " + this.angle + " || " + this.lastEpisodeRewards.reduce(average, 0)) 
             this.lastEpisodeRewards = [];  
                 
-        }
+        }*/
     }   
 
     changeAct(act){

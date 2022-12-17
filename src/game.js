@@ -19,7 +19,7 @@ export class Game extends Phaser.Scene{
         this.controlling = false;
         this.win = false;
         this.nEpisode = 1;
-        this.grow = false;
+        this.grow = true;
     }
     
 
@@ -157,7 +157,7 @@ export class Game extends Phaser.Scene{
             this.height = this.sys.game.canvas.height;
             this.incrw = this.width/this.col;
             this.incrh = this.height/this.fil;
-            //this.dibujar();
+            this.dibujar();
             this.ball.reiniciar();  
             this.player1.restart(this.sys.canvas.width/2,this.sys.canvas.height-40);
             this.player2.restart(this.sys.canvas.width/2,40);

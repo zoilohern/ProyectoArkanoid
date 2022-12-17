@@ -5,6 +5,10 @@ import { Controller } from "./components/controller.js";
 import { StrategyLowerPlatform } from "./components/strategyLowerPlatform.js";
 import { StrategyUpperPlatform } from "./components/strategyUpperPlatform.js";
 
+function average(p,c,i,a){
+    return p + (c/a.length);
+}
+
 export class Game extends Phaser.Scene{
     constructor(fil,col){
         super({key: 'game'})
@@ -17,7 +21,7 @@ export class Game extends Phaser.Scene{
         this.controlling = false;
         this.win = false;
         this.nEpisode = 1;
-        this.grow = false;
+        this.grow = true;
     }
     
 
@@ -75,19 +79,6 @@ export class Game extends Phaser.Scene{
 
     }
 
-    tiempo(){        
-            this.sys.game.scale.resize(this.sys.game.canvas.width + 100, this.sys.game.canvas.height + 100); 
-            this.physics.world.setBounds(0, 0, this.sys.game.canvas.width, this.sys.game.canvas.height, true, true, true, true); 
-            this.graphics.destroy();
-            this.width = this.sys.game.canvas.width;
-            this.height = this.sys.game.canvas.height;
-            this.incrw = this.width/this.col;
-            this.incrh = this.height/this.fil;
-            this.dibujar();
-            this.ball.reiniciar();
-            this.player1.restart();
-            this.player2.lastEpisodeRewards = [];                 
-    }
 
     update(){
         if (this.spaceKey.isDown && !this.pausado) {
@@ -148,12 +139,35 @@ export class Game extends Phaser.Scene{
     }    
 
     reiniciar(){
-        this.ball.reiniciar();
-        this.algoritmo.reiniciar(this.player1);  
-        this.algoritmo.reiniciar(this.player2);
-        this.nEpisode += 1; 
-        this.player1.restart();
-        this.player2.restart();
+        if(this.player1.lastEpisodeRewards.length>=100){
+            console.log(" LA MEDIA DE LOS ULTIMOS 100 EPISODIOS " + this.player1.lastEpisodeRewards.reduce(average,0)) 
+            console.log(" LA MEDIA DE LOS ULTIMOS 100 EPISODIOS " + this.player2.lastEpisodeRewards.reduce(average,0))
+        }
+        if(this.grow && this.sys.game.canvas.width < 600 && this.player1.lastEpisodeRewards.length>=100 && this.player1.lastEpisodeRewards.reduce(average,0)>=100){
+            console.log("CRECEMOS")           
+            this.sys.game.scale.resize(this.sys.game.canvas.width + 10, this.sys.game.canvas.height + 10); 
+            this.physics.world.setBounds(0, 0, this.sys.game.canvas.width, this.sys.game.canvas.height, true, true, true, true); 
+            this.graphics.destroy();
+            this.width = this.sys.game.canvas.width;
+            this.height = this.sys.game.canvas.height;
+            this.incrw = this.width/this.col;
+            this.incrh = this.height/this.fil;
+            //this.dibujar();
+            this.ball.reiniciar();
+            this.algoritmo.reiniciar(this.player1);  
+            this.algoritmo.reiniciar(this.player2); 
+            this.player1.restart(this.sys.canvas.width/2,this.sys.canvas.height-40);
+            this.player2.restart(this.sys.canvas.width/2,40);
+            this.nEpisode +=1; 
+        }else{
+            this.ball.reiniciar();
+            this.algoritmo.reiniciar(this.player1);  
+            this.algoritmo.reiniciar(this.player2);
+            this.player1.restart(this.sys.canvas.width/2,this.sys.canvas.height-40);
+            this.player2.restart(this.sys.canvas.width/2,40);
+            this.nEpisode += 1; 
+        }
+        
     }
 
     controll(){
