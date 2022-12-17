@@ -127,7 +127,7 @@ export class Game extends Phaser.Scene{
     impacto2(){
         this.win = true;
         this.player2.sprite.x = this.getRndInteger(this.player2.sprite.width/2,this.width-(this.player2.sprite.width/2));
-        console.log(this.player2.sprite.x)
+        //console.log(this.player2.sprite.x)
     }
 
     getRndInteger(min, max) {

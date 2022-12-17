@@ -63,7 +63,7 @@ export class Platform{
         }
          
         if(this.lastEpisodeRewards.length >= this.lastEpisodeRewardsMaxLength){
-            let row = "" + this.relatedScene.nEpisode + ", " + this.relatedScene.sys.game.canvas.width + ", "  + this.relatedScene.sys.game.canvas.height + ", " 
+            let row = "" + this.relatedScene.nEpisode + "; " + this.relatedScene.sys.game.canvas.width + "; "  + this.relatedScene.sys.game.canvas.height + "; " 
              + this.lastEpisodeRewards.reduce(average, 0); 
             this.history += row + "\n";
             //console.log("EPISODIO: " + this.relatedScene.nEpisode + "   ELEMENT: " + this.angle + " || " + this.lastEpisodeRewards.reduce(average, 0)) 

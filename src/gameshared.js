@@ -51,7 +51,7 @@ export class Game extends Phaser.Scene{
         this.player2.create();
         
         this.exito = this.getRndInteger(50,this.width-50);
-        //this.dibujar();
+        this.dibujar();
         this.posPlat = this.player1.coordenada();
         this.posBola = this.ball.coordenadas();
         console.log(this.posPlat)

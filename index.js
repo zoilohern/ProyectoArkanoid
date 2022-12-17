@@ -6,8 +6,8 @@ import { QTable } from './src/components/algoritmo1.js'
 
 const config = {
     type: Phaser.AUTO,
-    width: 200,
-    height: 200,
+    width: 600,
+    height: 600,
     scene: [new Game(8,8)],
     physics:{
         default: 'arcade',
