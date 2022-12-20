@@ -1,13 +1,13 @@
-import { Game } from './src/game.js';
-//import { Game } from './src/game2.js'
+//import { Game } from './src/game.js';
+import { Game } from './src/game2.js'
 //import { Game } from './src/game3.js'
 //import { Game } from './src/gameshared.js'
 import { QTable } from './src/components/algoritmo1.js'
 
 const config = {
     type: Phaser.AUTO,
-    width: 600,
-    height: 600,
+    width: 400,
+    height: 400,
     scene: [new Game(8,8)],
     physics:{
         default: 'arcade',
@@ -79,15 +79,20 @@ document.getElementById("load_algorithm").onclick = function() {
   try { 
     console.log(game.scene.getScene("game").algoritmo.Q)
     const reader = new FileReader();
-    let file = document.getElementById("algorithm_json").files[0]; 
-    reader.readAsText(file); 
-    reader.onload = function() { 
-      let loaded = reader.result; 
-      //console.log(game.scene.getScene("game").algoritmo.Q)
-      game.scene.getScene("game").algoritmo.Q.Q = JSON.parse(loaded)
-      //console.log(game.scene.getScene("game").algoritmo.Q)
-      console.log("LOAD Q = " + loaded); 
-      game.scene.getScene("game").reiniciar();
+    if( document.getElementById("algorithm_json").files.length == 0 ){
+      alert("Must select algorithm to load");
+    }else{
+      let file = document.getElementById("algorithm_json").files[0]; 
+      reader.readAsText(file); 
+      reader.onload = function() { 
+        let loaded = reader.result; 
+        //console.log(game.scene.getScene("game").algoritmo.Q)
+        game.scene.getScene("game").algoritmo.Q.Q = JSON.parse(loaded)
+        //console.log(game.scene.getScene("game").algoritmo.Q)
+        console.log("LOAD Q = " + loaded); 
+        game.scene.getScene("game").reiniciar();
+    }
+    
     }        
   } catch(err) { 
        console.error("ERROR: " + err);
