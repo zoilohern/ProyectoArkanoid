@@ -69,14 +69,14 @@ export class Algoritmo {
         this.Q = new QTable(this.Q.nActions,{})
     }
 
-    reiniciar(element){
+    restart(element){
         console.log("END episode = " + this.nEpisode + " reward = " + element.episodeReward);
         this.total_reward = 0;
         this.nEpisode += 1;
         element.episodeReward = 0;
     }
 
-    elegir_Accion(state){
+    chooseAction(state){
         var accion = 0;
         if(Math.random()<this.epsilon){
             accion = this.Q.getRandomAction(state);
@@ -86,7 +86,7 @@ export class Algoritmo {
         return accion;
     }
 
-    aprendizaje(element){
+    learning(element){
 
         if (this.relatedScene.impacthapp){
           this.addReward(50,element);
@@ -107,16 +107,16 @@ export class Algoritmo {
         }
         if(element.state1 == null){
           element.state1 = element.getState();
-          element.action1 = this.elegir_Accion(element.state1);
+          element.action1 = this.chooseAction(element.state1);
           while(!this.relatedScene.isFree(element.action1)){
-            element.action1 = this.elegir_Accion(element.state1);
+            element.action1 = this.chooseAction(element.state1);
             
           }
         }else{
           let state2 = element.getState();
-              let action2 = this.elegir_Accion(state2);
+              let action2 = this.chooseAction(state2);
               while(!this.relatedScene.end && !this.relatedScene.isFree(action2)){ 
-                 action2 = this.elegir_Accion(state2);
+                 action2 = this.chooseAction(state2);
               }
                 this.Q.updateQTable(element.state1, state2, element.stepReward,element.action1,action2);              
               element.stepReward = 0;

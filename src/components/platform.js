@@ -66,7 +66,7 @@ export class Platform{
           ball_vy = 1
        }       
        
-       let res = "_" + this.relatedScene.ball.coordenadas()[0] + "_" + this.relatedScene.ball.coordenadas()[1] + "_" + this.coordenada() + "_"  + ball_vx + "_" + ball_vy;
+       let res = "_" + this.relatedScene.ball.coordinates()[0] + "_" + this.relatedScene.ball.coordinates()[1] + "_" + this.coordinate() + "_"  + ball_vx + "_" + ball_vy;
        return res;
     }
 
@@ -89,7 +89,7 @@ export class Platform{
         this.sprite.body.setVelocityX(num);
     }
 
-    coordenada(){
+    coordinate(){
         return Math.floor(this.sprite.x/this.relatedScene.incrw)
     }
     

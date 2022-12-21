@@ -48,9 +48,9 @@ export class Game extends Phaser.Scene{
         
         this.exito = this.getRndInteger(this.player1.sprite.width/2,this.width-(this.player1.sprite.width/2));
         this.player1.sprite.x = this.exito;
-        this.dibujar();
-        this.posPlat = this.player1.coordenada();
-        this.posBola = this.ball.coordenadas();
+        //this.draw();
+        this.posPlat = this.player1.coordinate();
+        this.posBola = this.ball.coordinates();
         console.log(this.posPlat)
         console.log(this.posBola);
         
@@ -68,20 +68,6 @@ export class Game extends Phaser.Scene{
         
         this.cursors = this.input.keyboard.createCursorKeys();      
         this.controller = new Controller(this,this.cursors);  
-    }
-
-    tiempo(){        
-            this.sys.game.scale.resize(this.sys.game.canvas.width + 100, this.sys.game.canvas.height + 100); 
-            this.physics.world.setBounds(0, 0, this.sys.game.canvas.width, this.sys.game.canvas.height, true, true, true, true); 
-            this.graphics.destroy();
-            this.width = this.sys.game.canvas.width;
-            this.height = this.sys.game.canvas.height;
-            this.incrw = this.width/this.col;
-            this.incrh = this.height/this.fil;
-            this.dibujar();
-            this.ball.reiniciar();
-            this.player1.restart();
-            this.player2.lastEpisodeRewards = [];                 
     }
 
     update(){
@@ -103,7 +89,7 @@ export class Game extends Phaser.Scene{
         this.player1.update();
 
         if (this.restarting) {
-          this.reiniciar();
+          this.restart();
         }
 
     }
@@ -126,10 +112,10 @@ export class Game extends Phaser.Scene{
         return Math.floor(Math.random() * (max - min + 1) ) + min;
     }    
 
-    reiniciar(){
-        this.ball.reiniciar();
+    restart(){
+        this.ball.restart();
         this.player1.restart(this.sys.canvas.width/2,this.sys.canvas.height-40);
-        this.algoritmo.reiniciar(this.player1);          
+        this.algoritmo.restart(this.player1);          
         this.nEpisode += 1; 
         this.restarting = false;
     }
@@ -154,11 +140,11 @@ export class Game extends Phaser.Scene{
           ball_vy = 1
        }       
        
-       let res = "_" + this.ball.coordenadas()[0] + "_" + this.ball.coordenadas()[1] + "_" + this.player1.coordenada() + "_" + ball_vx + "_" + ball_vy;
+       let res = "_" + this.ball.coordinates()[0] + "_" + this.ball.coordinates()[1] + "_" + this.player1.coordinate() + "_" + ball_vx + "_" + ball_vy;
        return res;
     }
 
-    dibujar(){
+    draw(){
         this.graphics = this.add.graphics()
         this.graphics.lineStyle(1, 0xff5000,1)
 

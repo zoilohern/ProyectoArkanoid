@@ -49,32 +49,32 @@ function download(content,mimeType,filename){
 
 
 let delta = 16.6;
-document.getElementById("start_simulation").onclick = function() {
+document.getElementById("startSimulation").onclick = function() {
   game.simulating = true;
   console.log("STARTING SIMULATION");
   setTimeout(mysimulation, 0);
 
 };
 
-document.getElementById("stop_simulation").onclick = function() {
+document.getElementById("stopSimulation").onclick = function() {
     game.simulating = false;
     console.log("STOPPING SIMULATION"); 
     game.stopSimulation()
 };
 
-document.getElementById("change_player").onclick = function(){
+document.getElementById("changePlayer").onclick = function(){
   game.scene.getScene("game").controll();
 };
 
-document.getElementById("download_history").onclick = function() { 
+document.getElementById("downloadHistory").onclick = function() { 
   download(game.scene.getScene("game").player1.history, 'text/plain', "history.txt"); 
 }; 
 
-document.getElementById("download_algorithm").onclick = function() { 
+document.getElementById("downloadAlgorithm").onclick = function() { 
   download(JSON.stringify(game.scene.getScene("game").algoritmo.Q.Q), 'text/plain', "algorithm.txt"); 
 }; 
 
-document.getElementById("load_algorithm").onclick = function() { 
+document.getElementById("loadAlgorithm").onclick = function() { 
   try { 
     console.log(game.scene.getScene("game").algoritmo.Q)
     const reader = new FileReader();
@@ -87,7 +87,7 @@ document.getElementById("load_algorithm").onclick = function() {
         let loaded = reader.result; 
         game.scene.getScene("game").algoritmo.Q.Q = JSON.parse(loaded)
         console.log("LOAD Q = " + loaded); 
-        game.scene.getScene("game").reiniciar();
+        game.scene.getScene("game").restart();
     }
     
     }        

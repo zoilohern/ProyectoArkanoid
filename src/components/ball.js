@@ -64,13 +64,13 @@ export class Ball{
         
     }
 
-    reiniciar(){
+    restart(){
         this.sprite.x = this.relatedScene.width/2;
         this.sprite.y = this.relatedScene.height/2;
         this.setVelocities();
     }
 
-    coordenadas(){
+    coordinates(){
         let cuadr = [Math.floor(this.sprite.y/this.relatedScene.incrh), Math.floor(this.sprite.x/this.relatedScene.incrw)]
         return cuadr;
     }

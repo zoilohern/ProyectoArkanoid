@@ -41,24 +41,24 @@ export class Game extends Phaser.Scene{
             if(this.finish()==1){
                 this.win = true;
                 if(!this.controlling){
-                    this.algoritmo.aprendizaje(this.player1)
+                    this.algoritmo.learning(this.player1)
                 }  
-                this.algoritmo2.aprendizaje(this.player2);
+                this.algoritmo2.learning(this.player2);
                 this.player1.update()
                 this.player2.update()
                 this.win = false;
             }else{
                 this.restarting = true;
                 if(!this.controlling){
-                    this.algoritmo.aprendizaje(this.player1)
+                    this.algoritmo.learning(this.player1)
                 }  
-                this.algoritmo2.aprendizaje(this.player2);
+                this.algoritmo2.learning(this.player2);
                 this.player1.update()
                 this.player2.update()  
                 this.restarting = false;
             }
-            this.algoritmo.reiniciar(this.player1);
-            this.algoritmo2.reiniciar(this.player2);
+            this.algoritmo.restart(this.player1);
+            this.algoritmo2.restart(this.player2);
             this.player1.restart()
             this.player2.restart()
             console.log("GANA" + this.finish())
@@ -73,13 +73,13 @@ export class Game extends Phaser.Scene{
             this.end = true;
             this.impacthapp = true;
             if(!this.controlling){
-                this.algoritmo.aprendizaje(this.player1)
+                this.algoritmo.learning(this.player1)
             }            
-            this.algoritmo2.aprendizaje(this.player2);
+            this.algoritmo2.learning(this.player2);
             this.player1.update()
             this.player2.update()
-            this.algoritmo.reiniciar(this.player1);
-            this.algoritmo2.reiniciar(this.player2);    
+            this.algoritmo.restart(this.player1);
+            this.algoritmo2.restart(this.player2);    
             this.player1.restart()
             this.player2.restart()
             this.impacthapp = false;
@@ -93,11 +93,11 @@ export class Game extends Phaser.Scene{
             if(this.controlling){
                 this.playerchoice();
             }else{
-                this.algoritmo.aprendizaje(this.player1)
+                this.algoritmo.learning(this.player1)
             }
             
         }else{
-            this.algoritmo2.aprendizaje(this.player2);
+            this.algoritmo2.learning(this.player2);
         }
        
     }

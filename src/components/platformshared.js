@@ -77,7 +77,7 @@ export class Platform{
         this.sprite.body.setVelocityX(num);
     }
 
-    coordenada(){
+    coordinate(){
         return Math.floor(this.sprite.x/this.relatedScene.incrw)
     }
     

@@ -19,7 +19,7 @@ export class StrategyLowerPlatform{
           ball_vy = 1
        }       
        
-       let res = "_" + this.relatedScene.ball.coordenadas()[0] + "_" + this.relatedScene.ball.coordenadas()[1] + "_" + this.relatedScene.player1.coordenada()
+       let res = "_" + this.relatedScene.ball.coordinates()[0] + "_" + this.relatedScene.ball.coordinates()[1] + "_" + this.relatedScene.player1.coordinate()
         + "_"  + ball_vx + "_" + ball_vy;
        return res;
     }

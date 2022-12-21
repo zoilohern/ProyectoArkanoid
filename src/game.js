@@ -52,9 +52,9 @@ export class Game extends Phaser.Scene{
         this.player2.create();
         
         this.exito = this.getRndInteger(50,this.width-50);
-        this.dibujar();
-        this.posPlat = this.player1.coordenada();
-        this.posBola = this.ball.coordenadas();
+        this.draw();
+        this.posPlat = this.player1.coordinate();
+        this.posBola = this.ball.coordinates();
         console.log(this.posPlat)
         console.log(this.posBola);        
         console.log(this.getSituation());
@@ -64,8 +64,8 @@ export class Game extends Phaser.Scene{
 
         console.log(this.algoritmo.Q);
 
-        this.physics.add.collider(this.ball.get(), this.player1.get(), this.impacto, null, this);
-        this.physics.add.collider(this.ball.get(), this.player2.get(), this.impacto2, null, this);
+        this.physics.add.collider(this.ball.get(), this.player1.get(), this.impact, null, this);
+        this.physics.add.collider(this.ball.get(), this.player2.get(), this.impact2, null, this);
 
         this.ball.setVelocities();
         
@@ -92,14 +92,14 @@ export class Game extends Phaser.Scene{
         if(this.controlling){
             this.controller.update()
         }else{
-            this.algoritmo.aprendizaje(this.player1)
+            this.algoritmo.learning(this.player1)
         }
-        this.algoritmo2.aprendizaje(this.player2)
+        this.algoritmo2.learning(this.player2)
         this.player1.update();
         this.player2.update();
 
         if (this.restarting || this.win) {
-          this.reiniciar();
+          this.restart();
         }
 
     }
@@ -108,12 +108,12 @@ export class Game extends Phaser.Scene{
         el.changeAct(act);
     }
 
-    impacto(){
+    impact(){
        this.impacthapp1 = true;
        this.ball.impact(0);
     }
 
-    impacto2(){
+    impact2(){
         this.impacthapp2 = true;
         this.ball.impact(1);
     }
@@ -122,12 +122,12 @@ export class Game extends Phaser.Scene{
         return Math.floor(Math.random() * (max - min + 1) ) + min;
     }    
 
-    reiniciar(){
-        this.ball.reiniciar();
+    restart(){
+        this.ball.restart();
         this.player1.restart(this.sys.canvas.width / 2,this.sys.canvas.height - 40);
         this.player2.restart(this.sys.canvas.width / 2,40);
-        this.algoritmo.reiniciar(this.player1);  
-        this.algoritmo2.reiniciar(this.player2);
+        this.algoritmo.restart(this.player1);  
+        this.algoritmo2.restart(this.player2);
         this.nEpisode += 1;
         this.restarting = false;
         this.win = false; 
@@ -141,8 +141,8 @@ export class Game extends Phaser.Scene{
             this.height = this.sys.game.canvas.height;
             this.incrw = this.width/this.col;
             this.incrh = this.height/this.fil;
-            this.dibujar();
-            this.ball.reiniciar();  
+            this.draw();
+            this.ball.restart();  
             this.player1.restart(this.sys.canvas.width / 2,this.sys.canvas.height  - 40);
             this.player2.restart(this.sys.canvas.width / 2,40);
             
@@ -175,11 +175,11 @@ export class Game extends Phaser.Scene{
           ball_vy = 1
        }       
        
-       let res = "_" + this.ball.coordenadas()[0] + "_" + this.ball.coordenadas()[1] + "_" + this.player1.coordenada() + "_" + ball_vx + "_" + ball_vy;
+       let res = "_" + this.ball.coordinates()[0] + "_" + this.ball.coordinates()[1] + "_" + this.player1.coordinate() + "_" + ball_vx + "_" + ball_vy;
        return res;
     }
 
-    dibujar(){
+    draw(){
         this.graphics = this.add.graphics()
         this.graphics.lineStyle(1, 0xff5000,1)
 
