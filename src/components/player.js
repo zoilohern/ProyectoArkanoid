@@ -42,20 +42,8 @@ export class Player{
     }
 
     update(){
-       /* if(this.action == 0){
-            this.setVelocityX(0)
-        }else if(this.action == 1 ){
-            this.setVelocityX(this.vel)
-        }else if(this.action == 2){
-            this.setVelocityX(-this.vel);
-        }*/
-
         if(this.relatedScene.end){
-            /*this.history += "" + this.relatedScene.nEpisode
-             + "," + this.relatedScene.sys.game.canvas.width + ","  + this.relatedScene.sys.game.canvas.height + ","  + this.episodeReward + "\n";*/
-             this.lastEpisodeRewards.push(this.episodeReward);
-             //this.episodeReward = 0;  se hace en el algoritmo
-             
+             this.lastEpisodeRewards.push(this.episodeReward);             
         }
          
         if(this.lastEpisodeRewards.length >= this.lastEpisodeRewardsMaxLength){

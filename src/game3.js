@@ -25,8 +25,8 @@ export class Game extends Phaser.Scene{
         this.end = false;
         this.width = this.sys.game.canvas.width;
         this.height = this.sys.game.canvas.height;
-        this.incrw = this.width/3;
-        this.incrh = this.height/3;
+        this.incrw = this.width / 3;
+        this.incrh = this.height / 3;
         this.impacthapp = false;
         this.drawBoard();
         this.board = [0,0,0,0,0,0,0,0,0];
@@ -34,10 +34,8 @@ export class Game extends Phaser.Scene{
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
-    update(){
-        //if(this.spaceKey.isDown){            
-        if(this.move>=5 && this.finish()!=0){ //gana alguien
-            //reiniciar
+    update(){         
+        if(this.move>=5 && this.finish() != 0){
             this.end = true;
             this.nEpisode++;
             if(this.finish()==1){
@@ -70,7 +68,7 @@ export class Game extends Phaser.Scene{
             this.move = 0;           
             this.end = false;
            
-        }else if (this.move>=9){ //(draw) empate
+        }else if (this.move>=9){
             this.nEpisode++
             this.end = true;
             this.impacthapp = true;
@@ -91,18 +89,17 @@ export class Game extends Phaser.Scene{
             this.board = [0,0,0,0,0,0,0,0,0]
             this.move = 0;
             console.log("EMPATE")
-        }else if (this.turnPlayer1){ //juega 1
+        }else if (this.turnPlayer1){
             if(this.controlling){
                 this.playerchoice();
             }else{
                 this.algoritmo.aprendizaje(this.player1)
             }
             
-        }else{ //juega2
+        }else{
             this.algoritmo2.aprendizaje(this.player2);
         }
        
-    //}
     }
 
     playerchoice(){
@@ -110,10 +107,9 @@ export class Game extends Phaser.Scene{
         let correct = false;
         
             game.input.on('pointerdown',function(pointer){
-                //if(game.turnPlayer1){
-                    let action = Math.floor(pointer.y/game.incrw)*3 + Math.floor(pointer.x/game.incrh);
+                    let action = Math.floor(pointer.y / game.incrw) * 3 + Math.floor(pointer.x / game.incrh);
                     if(game.isFree(action)){
-                        game.drawX(Math.floor(pointer.y/game.incrw),Math.floor(pointer.x/game.incrh));
+                        game.drawX(Math.floor(pointer.y / game.incrw),Math.floor(pointer.x / game.incrh));
                         console.log(action)
                         game.board[action] = 1;
                         game.move++;
@@ -121,8 +117,6 @@ export class Game extends Phaser.Scene{
                         correct = true;
                     }
                     
-                //}
-                
             })     
     }
 
@@ -135,15 +129,11 @@ export class Game extends Phaser.Scene{
     }
 
     finish(){
-        if(this.checkRow()!=0){
-            //console.log("ROW")
-            return this.checkRow();
-            
-        }else if (this.checkCol()!=0){
-            //console.log("COL")
+        if(this.checkRow() != 0){
+            return this.checkRow();           
+        }else if (this.checkCol() != 0){
             return this.checkCol();
-        }else if(this.checkDiag()!=0){
-            //console.log("DIAG")
+        }else if(this.checkDiag() != 0){
             return this.checkDiag();
         }else{
             return 0;
@@ -212,17 +202,17 @@ export class Game extends Phaser.Scene{
     }
 
     isFree(act){
-        return this.board[act]==0 
+        return this.board[act] == 0 
     }
 
     drawBoard(){
         this.graphics = this.add.graphics()
 		this.graphics.lineStyle(3, 0xffffff, 1)
-		for(var i = this.incrw; i<this.width; i= i + this.incrw){
+		for(var i = this.incrw; i<this.width; i = i + this.incrw){
             this.graphics.lineBetween(i, 0, i, this.height);
         }
 
-        for(var i = this.incrh; i<this.height; i= i + this.incrh){
+        for(var i = this.incrh; i<this.height; i = i + this.incrh){
             this.graphics.lineBetween(0, i, this.width, i);
         }
 	}
@@ -230,12 +220,10 @@ export class Game extends Phaser.Scene{
     drawX(i , j){
 		this.graphics.lineStyle(5, 0xd50102, 1)
 		this.graphics.beginPath()
-		
-		// Draw X
-		this.graphics.moveTo((j*this.incrw)+5, (i * this.incrh)+5)
-		this.graphics.lineTo(((j+1)*this.incrw)-5, ((i+1)*this.incrh)-5)
-		this.graphics.moveTo(((j+1)*this.incrw)-5, (i*this.incrh)+5)
-		this.graphics.lineTo((j*this.incrw)+5, ((i+1)*this.incrh)-5)
+		this.graphics.moveTo((j * this.incrw) + 5, (i * this.incrh) + 5)
+		this.graphics.lineTo(((j + 1) * this.incrw) - 5, ((i + 1) * this.incrh) - 5)
+		this.graphics.moveTo(((j + 1) * this.incrw) - 5, (i * this.incrh) + 5)
+		this.graphics.lineTo((j * this.incrw) + 5, ((i + 1) * this.incrh) - 5)
 		this.graphics.closePath()
 		this.graphics.strokePath()
 
@@ -244,12 +232,9 @@ export class Game extends Phaser.Scene{
     drawO(i, j){
 		this.graphics.lineStyle(5, 0xa6b401, 1)
 		this.graphics.beginPath()
-
-		const radius = Math.min(this.incrh,this.incrw)/2 -5;
-		
-		// Draw O
-		let centerX = ((j+1)*this.incrw)-(this.incrw/2)
-		let centerY = ((i+1)*this.incrh)-(this.incrh/2)
+		const radius = Math.min(this.incrh,this.incrw) / 2 -5;		
+		let centerX = ((j + 1) * this.incrw) - (this.incrw / 2)
+		let centerY = ((i + 1) * this.incrh) - (this.incrh / 2)
 		this.graphics.closePath()
 		this.graphics.strokeCircle(centerX, centerY, radius)
 	}

@@ -41,8 +41,6 @@ export class Platform{
             let row = "" + this.relatedScene.nEpisode + "; " + this.relatedScene.sys.game.canvas.width + "; "  + this.relatedScene.sys.game.canvas.height + "; " 
              + this.lastEpisodeRewards.reduce(average, 0); 
             this.history += row + "\n";
-            //console.log("SE ESCRIBE EN EL TXT")
-            //console.log("EPISODIO: " + this.relatedScene.nEpisode + "   ELEMENT: " + this.angle + " || " + this.lastEpisodeRewards.reduce(average, 0)) 
             this.lastEpisodeRewards = [];  
                 
         }
@@ -66,21 +64,8 @@ export class Platform{
         }
 
         if(this.relatedScene.restarting || this.relatedScene.win){
-            //this.history += "EP: " + this.relatedScene.nEpisode
-             //+ ", W: " + this.relatedScene.sys.game.canvas.width + ", H: "  + this.relatedScene.sys.game.canvas.height + ", R: "  + this.episodeReward + "\n";
-             this.lastEpisodeRewards.push(this.episodeReward);
-             //this.episodeReward = 0;  //se hace en el algoritmo
-             
+             this.lastEpisodeRewards.push(this.episodeReward);             
         }
-         
-        /*if(this.lastEpisodeRewards.length >= this.lastEpisodeRewardsMaxLength){
-            let row = "" + this.relatedScene.nEpisode + "; " + this.relatedScene.sys.game.canvas.width + "; "  + this.relatedScene.sys.game.canvas.height + "; " 
-             + this.lastEpisodeRewards.reduce(average, 0); 
-            this.history += row + "\n";
-            //console.log("EPISODIO: " + this.relatedScene.nEpisode + "   ELEMENT: " + this.angle + " || " + this.lastEpisodeRewards.reduce(average, 0)) 
-            this.lastEpisodeRewards = [];  
-                
-        }*/
     }   
 
     changeAct(act){

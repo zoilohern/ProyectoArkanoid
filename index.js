@@ -20,7 +20,6 @@ const config = {
 
 var game = new Phaser.Game(config);
 console.log("game.loop._target = " + game.loop._target)
-//game.loop._target = 1
 console.log("game.loop._target = " + game.loop._target)
 
 
@@ -86,9 +85,7 @@ document.getElementById("load_algorithm").onclick = function() {
       reader.readAsText(file); 
       reader.onload = function() { 
         let loaded = reader.result; 
-        //console.log(game.scene.getScene("game").algoritmo.Q)
         game.scene.getScene("game").algoritmo.Q.Q = JSON.parse(loaded)
-        //console.log(game.scene.getScene("game").algoritmo.Q)
         console.log("LOAD Q = " + loaded); 
         game.scene.getScene("game").reiniciar();
     }
@@ -99,7 +96,6 @@ document.getElementById("load_algorithm").onclick = function() {
   } 
 
 }
-//**/
 
 
 
